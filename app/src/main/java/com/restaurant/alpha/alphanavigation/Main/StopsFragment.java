@@ -15,7 +15,6 @@ import com.restaurant.alpha.alphanavigation.R;
  */
 public class StopsFragment extends Fragment {
 
-
     public StopsFragment() {
         // Required empty public constructor
     }
