@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.restaurant.alpha.alphanavigation">
-
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,9 +14,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SelectLocationByNameActivity"
+            android:label="@string/title_activity_select_location_by_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SelectLocationByMapActivity"
+            android:label="@string/title_activity_select_location_by_map"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Floating.FloatingActivity" />
 
         <service android:name=".Floating.FloatingService"></service>
     </application>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 </manifest>
