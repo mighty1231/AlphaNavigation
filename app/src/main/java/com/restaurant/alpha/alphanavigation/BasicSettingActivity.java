@@ -17,6 +17,8 @@ import com.skp.Tmap.TMapTapi;
 
 import java.util.ArrayList;
 
+import com.restaurant.alpha.alphanavigation.Floating.FloatingService;
+
 public class BasicSettingActivity extends AppCompatActivity {
     public static final int STOP_REQUEST = 100;
     public static final int DESTINATION_REQUEST = 101;
@@ -29,6 +31,8 @@ public class BasicSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_setting);
+
+        startService(new Intent(getApplicationContext(), FloatingService.class));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stop_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
@@ -54,6 +58,7 @@ public class BasicSettingActivity extends AppCompatActivity {
         // 3. create an adapter
         this.myStopAdapter = new StopAdapter(getApplicationContext());
         // 4. set adapter
+
         recyclerView.setAdapter(myStopAdapter);
         recyclerView.setHasFixedSize(true);
 
