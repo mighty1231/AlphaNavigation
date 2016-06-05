@@ -1,6 +1,5 @@
 package com.restaurant.alpha.alphanavigation.TwoDMap;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,25 +8,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
-import com.restaurant.alpha.alphanavigation.BasicSettingActivity;
 import com.restaurant.alpha.alphanavigation.R;
-import com.skp.Tmap.TMapAddressInfo;
 import com.skp.Tmap.TMapData.FindPathDataListenerCallback;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapPolyLine;
-import com.skp.Tmap.TMapTapi;
 import com.skp.Tmap.TMapView;
 
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 /**
- * A simple {@link Fragment} subclass.
+ * @author Snyo
+ * A Class that shows 2D map and path. It is called by navigation.
  */
 public class TwoDMapActivity extends AppCompatActivity {
 
