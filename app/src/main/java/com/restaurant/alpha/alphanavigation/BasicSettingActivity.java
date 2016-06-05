@@ -47,7 +47,7 @@ public class BasicSettingActivity extends AppCompatActivity {
         assert(navigationStart != null);
 
         destinationName = null;
-        destinationPosition = new double[2];
+        destinationPosition = null;
         /**
          * This is for connection
          */
@@ -134,11 +134,16 @@ public class BasicSettingActivity extends AppCompatActivity {
         navigationStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonData.getInstance().setDestination(new TMapPoint(destinationPosition[0], destinationPosition[1]));
-                CommonData.getInstance().setStops(myStopAdapter.getStopLocation());
-                Intent intent = new Intent(getApplicationContext(), TwoDMapActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                if(destinationPosition == null) {
+                    Toast.makeText(getApplicationContext(), "Select Destination", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    CommonData.getInstance().setDestination(new TMapPoint(destinationPosition[0], destinationPosition[1]));
+                    CommonData.getInstance().setStops(myStopAdapter.getStopLocation());
+                    Intent intent = new Intent(getApplicationContext(), TwoDMapActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
             }
         });
     }

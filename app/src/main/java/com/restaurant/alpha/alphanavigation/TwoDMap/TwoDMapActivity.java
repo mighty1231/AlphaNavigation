@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.restaurant.alpha.alphanavigation.CommonData;
 import com.restaurant.alpha.alphanavigation.R;
 import com.skp.Tmap.TMapData.FindPathDataListenerCallback;
 import com.skp.Tmap.TMapData;
@@ -36,21 +37,19 @@ public class TwoDMapActivity extends AppCompatActivity {
 
         RelativeLayout mMainRelativeLayout = (RelativeLayout) findViewById(R.id.tmapapi2);
         final TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("7862e03c-f02d-3eba-a686-5a01ff03a257");
 
         assert mMainRelativeLayout != null;
 
-        TMapGpsManager tMapGps = new TMapGpsManager(this);
-        TMapPoint curr = tMapGps.getLocation();
-        tmapview.setLocationPoint(curr.getLongitude(), curr.getLatitude());
+
         mMainRelativeLayout.addView(tmapview);
 
-        TMapPoint startpoint = new TMapPoint(36.349323, 127.388457);
-        TMapPoint endpoint = new TMapPoint(36.343516, 127.410773);
-        TMapPoint stop = new TMapPoint(36.349229, 127.394395);
-        ArrayList<TMapPoint> stops = new ArrayList<>();
-        stops.add(stop);
-
+        TMapPoint startpoint = tmapview.getLocationPoint();
+        TMapPoint endpoint = CommonData.getInstance().getDestination();
+        ArrayList<TMapPoint> stops = CommonData.getInstance().getStops();
+        if (CommonData.getInstance().getCurrentLocation() != null) {
+            startpoint = CommonData.getInstance().getCurrentLocation();
+            tmapview.setLocationPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
+        }
         TMapData tMapData = new TMapData();
         tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, startpoint, endpoint, stops, 0, new FindPathDataListenerCallback() {
             @Override

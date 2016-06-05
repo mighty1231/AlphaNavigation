@@ -9,7 +9,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BasicSettingActivity"></activity>
+        <activity android:name=".BasicSettingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SelectLocationByNameActivity"
             android:label="@string/title_activity_select_location_by_name"
@@ -22,11 +28,6 @@
             android:name=".TwoDMap.TwoDMapActivity"
             android:label="n"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".Floating.FloatingService" />

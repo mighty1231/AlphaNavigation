@@ -61,6 +61,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myData.remove(position);
+                                stopLocation.remove(position);
                                 notifyDataSetChanged();
                             }
                         });

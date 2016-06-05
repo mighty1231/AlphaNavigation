@@ -10,6 +10,7 @@ public class CommonData {
     private static CommonData mInstance = null;
     private TMapPoint destination = null;
     private ArrayList<TMapPoint> stops = null;
+    private TMapPoint currentLocation = null;
 
     public static CommonData getInstance() {
         /* DO NOT modify this */
@@ -30,11 +31,19 @@ public class CommonData {
         stops = items;
     }
 
+    public void setCurrentLocation (TMapPoint item) {
+        currentLocation = item;
+    }
+
     public TMapPoint getDestination () {
         return destination;
     }
 
     public ArrayList<TMapPoint> getStops () {
         return stops;
+    }
+
+    public TMapPoint getCurrentLocation () {
+        return currentLocation;
     }
 }

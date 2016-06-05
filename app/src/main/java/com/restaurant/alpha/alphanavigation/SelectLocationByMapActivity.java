@@ -2,6 +2,7 @@ package com.restaurant.alpha.alphanavigation;
 
 import android.content.Intent;
 import android.graphics.PointF;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.skp.Tmap.TMapAddressInfo;
 import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapMarkerItem2;
 import com.skp.Tmap.TMapPOIItem;
@@ -24,7 +26,7 @@ import com.skp.Tmap.TMapView;
 
 import java.util.ArrayList;
 
-public class SelectLocationByMapActivity extends AppCompatActivity {
+public class SelectLocationByMapActivity extends AppCompatActivity  {
     private TMapView tmapview;
 
     @Override
@@ -37,6 +39,11 @@ public class SelectLocationByMapActivity extends AppCompatActivity {
         RelativeLayout locationByNameRelativeLayout = (RelativeLayout)findViewById(R.id.tmapapi);
         assert(locationByNameRelativeLayout != null);
         this.tmapview = new TMapView(this);
+        tmapview.setTrackingMode(true);
+        if(CommonData.getInstance().getCurrentLocation() != null) {
+            tmapview.setCenterPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
+            tmapview.setLocationPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
+        }
         locationByNameRelativeLayout.addView(tmapview);
 
         this.tmapview.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
