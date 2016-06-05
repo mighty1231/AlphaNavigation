@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.restaurant.alpha.alphanavigation.TwoDMap.TwoDMapActivity;
+import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapTapi;
 
 import java.util.ArrayList;
@@ -37,10 +39,12 @@ public class BasicSettingActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stop_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
         destination = (TextView)findViewById(R.id.destination_name);
+        TextView navigationStart = (TextView)findViewById(R.id.navigation_start);
 
         assert(addStops != null);
         assert(recyclerView != null);
         assert(destination != null);
+        assert(navigationStart != null);
 
         destinationName = null;
         destinationPosition = new double[2];
@@ -125,6 +129,16 @@ public class BasicSettingActivity extends AppCompatActivity {
                     AlertDialog alert = alertBuilder.create();
                     alert.show();
                 }
+            }
+        });
+        navigationStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonData.getInstance().setDestination(new TMapPoint(destinationPosition[0], destinationPosition[1]));
+                CommonData.getInstance().setStops(myStopAdapter.getStopLocation());
+                Intent intent = new Intent(getApplicationContext(), TwoDMapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
     }

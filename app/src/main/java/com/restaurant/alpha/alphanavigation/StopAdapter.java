@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.skp.Tmap.TMapPoint;
+
 import java.util.ArrayList;
 
 /**
@@ -19,14 +21,12 @@ import java.util.ArrayList;
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> myData;
-    private ArrayList<Double> latitude;
-    private ArrayList<Double> longitude;
+    private ArrayList<TMapPoint> stopLocation;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public StopAdapter(Context context) {
         this.context = context;
-        latitude = new ArrayList<Double>();
-        longitude = new ArrayList<Double>();
+        stopLocation = new ArrayList<TMapPoint>();
         myData = new ArrayList<String>();
     }
 
@@ -92,10 +92,13 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     }
 
     public void addLocation(double[] position, String name) {
-        this.latitude.add(position[0]);
-        this.longitude.add(position[1]);
+        this.stopLocation.add(new TMapPoint(position[0], position[1]));
         myData.add(name);
         notifyDataSetChanged();
+    }
+
+    public ArrayList<TMapPoint> getStopLocation() {
+        return stopLocation;
     }
 
     @Override
