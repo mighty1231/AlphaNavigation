@@ -8,6 +8,9 @@ import android.widget.Toast;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapPoint;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class AlphaNavigation extends Application implements TMapGpsManager.onLocationChangedCallback {
 
     @Override
@@ -29,5 +32,11 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         gps.OpenGps();
         /* initialize db, and... such things here
          * see https://github.com/wordpress-mobile/WordPress-Android/blob/develop/WordPress/src/main/java/org/wordpress/android/WordPress.java */
+
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
+                .name("alphaNavigation.realm")
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 }
