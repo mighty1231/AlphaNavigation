@@ -51,12 +51,16 @@ public class BasicSettingActivity extends AppCompatActivity {
         TMapTapi tmaptapi = new TMapTapi(this);
         tmaptapi.setSKPMapAuthentication ("7862e03c-f02d-3eba-a686-5a01ff03a257");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setVerticalScrollBarEnabled(true);
         // 3. create an adapter
-        this.myStopAdapter = new StopAdapter(this);
+        this.myStopAdapter = new StopAdapter(getApplicationContext());
         // 4. set adapter
 
         recyclerView.setAdapter(myStopAdapter);
+        recyclerView.setHasFixedSize(true);
 
         destination.setOnClickListener(new View.OnClickListener() {
             @Override
