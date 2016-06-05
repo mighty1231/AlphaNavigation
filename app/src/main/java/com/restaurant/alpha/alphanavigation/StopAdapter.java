@@ -36,7 +36,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
                                                    int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.stop_recycler_item_view, null);
+                .inflate(R.layout.stop_recycler_item_view, parent, false);
 
         // create ViewHolder
         ViewHolder vh = new ViewHolder(itemLayoutView);

@@ -16,8 +16,7 @@
     <EditText
         android:id="@+id/name_keyword"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:singleLine="true"
         android:imeOptions="actionSearch"
         />
@@ -27,13 +26,6 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
+        android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
-
-    <ImageView
-        android:id="@+id/why_this_happen"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0"
-        />
 </LinearLayout>
