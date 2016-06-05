@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
@@ -20,8 +21,8 @@ import com.skp.Tmap.TMapView;
 import java.util.ArrayList;
 
 /**
- * @author Snyo
- * A Class that shows 2D map and path. It is called by navigation.
+ * @author AlphaGo
+ *         A Class that shows 2D map and path. It is called by navigation.
  */
 public class TwoDMapActivity extends AppCompatActivity {
 
@@ -51,6 +52,7 @@ public class TwoDMapActivity extends AppCompatActivity {
             tmapview.setLocationPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
         }
         TMapData tMapData = new TMapData();
+        tmapview.setTrackingMode(true);
         tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, startpoint, endpoint, stops, 0, new FindPathDataListenerCallback() {
             @Override
             public void onFindPathData(TMapPolyLine pathdata) {
