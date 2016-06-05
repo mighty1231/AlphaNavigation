@@ -9,4 +9,6 @@
     <string name="title_activity_select_location_by_name">SelectLocationByName</string>
     <string name="title_activity_select_location_by_map">SelectLocationByMap</string>
     <string name="menu_name">Send</string>
+    <string name="menu_back">Back</string>
+    <string name="GoToCurrentPosition">Current</string>
 </resources>

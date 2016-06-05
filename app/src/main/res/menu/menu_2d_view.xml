@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Create_Event">
+    <item
+        android:id="@+id/action_current"
+        android:title="@string/GoToCurrentPosition"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_back_to_3d"
+        android:title="@string/menu_back"
+        app:showAsAction="ifRoom" />
+</menu>
