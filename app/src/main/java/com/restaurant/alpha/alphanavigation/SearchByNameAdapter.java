@@ -1,9 +1,12 @@
 package com.restaurant.alpha.alphanavigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,32 +14,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.skp.Tmap.TMapPOIItem;
+
 import java.util.ArrayList;
 
 /**
- * Created by HyunhoHa on 2016-06-01.
+ * Created by HyunhoHa on 2016-06-04.
  */
-public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
+public class SearchByNameAdapter extends RecyclerView.Adapter<SearchByNameAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<String> myData;
-    private ArrayList<Double> latitude;
-    private ArrayList<Double> longitude;
+    private ArrayList<TMapPOIItem> myData;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public StopAdapter(Context context) {
+    public SearchByNameAdapter(Context context) {
         this.context = context;
-        latitude = new ArrayList<Double>();
-        longitude = new ArrayList<Double>();
-        myData = new ArrayList<String>();
+        myData = new ArrayList<TMapPOIItem>();
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public StopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public SearchByNameAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.stop_recycler_item_view, null);
+                .inflate(R.layout.search_by_name_recycler_item_view, null);
 
         // create ViewHolder
         ViewHolder vh = new ViewHolder(itemLayoutView);
@@ -48,20 +49,30 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your data at this position
         // - replace the contents of the view with that element
-        holder.myTextView.setText(myData.get(position));
-        holder.myImageView.setOnClickListener(new View.OnClickListener() {
+        holder.myTextView.setText(myData.get(position).getPOIName());
+        holder.myTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
-                alertBuilder.setTitle("Do you want to delete?");
-                alertBuilder.setMessage("You will remove this data");
+                alertBuilder.setTitle("Do you want to Select?");
+                alertBuilder.setMessage("Adding Location");
 
-                alertBuilder.setPositiveButton("Delete",
+                alertBuilder.setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                myData.remove(position);
-                                notifyDataSetChanged();
+                                double[] pos = new double[2];
+                                pos[0] = myData.get(position).getPOIPoint().getLatitude();
+                                pos[1] =  myData.get(position).getPOIPoint().getLongitude();
+                                String name = myData.get(position).getPOIName();
+
+                                Toast.makeText(context, Double.toString(pos[0]) + "," +Double.toString(pos[1]) + "," + name, Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent();
+                                intent.putExtra("pos", pos);
+                                intent.putExtra("name", name);
+                                ((Activity)context).setResult(BasicSettingActivity.RESULT_OK, intent);
+                                ((Activity)context).finish();
                             }
                         });
                 alertBuilder.setNegativeButton("Cancel",
@@ -83,19 +94,19 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView myTextView;
-        public ImageView myImageView;
         public ViewHolder(View view) {
             super(view);
-            myImageView = (ImageView)view.findViewById(R.id.minus);
-            myTextView = (TextView)view.findViewById(R.id.title);
+            myTextView = (TextView)view.findViewById(R.id.name_title);
         }
     }
 
-    public void addLocation(double[] position, String name) {
-        this.latitude.add(position[0]);
-        this.longitude.add(position[1]);
-        myData.add(name);
-        notifyDataSetChanged();
+    // Return the size of your data (invoked by the layout manager)
+    public void addLocation(TMapPOIItem item) {
+        myData.add(item);
+    }
+
+    public void deleteAllLocation() {
+        myData.clear();
     }
 
     @Override

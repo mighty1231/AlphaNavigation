@@ -7,18 +7,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context="com.restaurant.alpha.alphanavigation.BasicSettingActivity">
 
-    <include layout = "@layout/content_stops"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+    <include layout="@layout/content_basic_setting"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_width="match_parent"
         />
 
-    <include layout = "@layout/layout_destination_history"
-        android:layout_height="match_parent"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        />
+        android:text="Navigation Start"/>
+
 </LinearLayout>
