@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.restaurant.alpha.alphanavigation.R;
 import com.skp.Tmap.TMapData.FindPathDataListenerCallback;
 import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapPolyLine;
 import com.skp.Tmap.TMapView;
@@ -38,6 +39,10 @@ public class TwoDMapActivity extends AppCompatActivity {
         tmapview.setSKPMapApiKey("7862e03c-f02d-3eba-a686-5a01ff03a257");
 
         assert mMainRelativeLayout != null;
+
+        TMapGpsManager tMapGps = new TMapGpsManager(this);
+        TMapPoint curr = tMapGps.getLocation();
+        tmapview.setLocationPoint(curr.getLongitude(), curr.getLatitude());
         mMainRelativeLayout.addView(tmapview);
 
         TMapPoint startpoint = new TMapPoint(36.349323, 127.388457);
@@ -53,6 +58,7 @@ public class TwoDMapActivity extends AppCompatActivity {
                 tmapview.addTMapPath(pathdata);
             }
         });
+
     }
 
     @Override
