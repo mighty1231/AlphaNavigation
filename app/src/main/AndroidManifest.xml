@@ -22,7 +22,6 @@
             android:name=".SelectLocationByMapActivity"
             android:label="@string/title_activity_select_location_by_map"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Floating.FloatingActivity" />
 
         <service android:name=".Floating.FloatingService"></service>
     </application>

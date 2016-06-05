@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.restaurant.alpha.alphanavigation.R;
 
-public class FloatingService extends Service {
+public class FloatingService extends Service{
     private WindowManager windowManager;
     private RelativeLayout btnView, removeView;
     private ImageView btnImg, removeImg;
@@ -49,17 +49,6 @@ public class FloatingService extends Service {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        btnView = (RelativeLayout)inflater.inflate(R.layout.floating_btn, null);
-        btnImg = (ImageView)btnView.findViewById(R.id.floating_btn);
-        WindowManager.LayoutParams btnParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        btnParams.gravity = Gravity.TOP | Gravity.LEFT;
-        windowManager.addView(btnView, btnParams);
-
         removeView = (RelativeLayout)inflater.inflate(R.layout.floating_remove, null);
         removeImg = (ImageView)removeView.findViewById(R.id.floating_remove);
         removeView.setVisibility(View.GONE);
@@ -73,6 +62,18 @@ public class FloatingService extends Service {
         rmvParams.x = 0;
         rmvParams.y = 100;
         windowManager.addView(removeView, rmvParams);
+
+        btnView = (RelativeLayout)inflater.inflate(R.layout.floating_btn, null);
+        btnImg = (ImageView)btnView.findViewById(R.id.floating_btn);
+        WindowManager.LayoutParams btnParams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        btnParams.gravity = Gravity.TOP | Gravity.LEFT;
+        windowManager.addView(btnView, btnParams);
+
 
         // set click listener
         btnView.setOnTouchListener(new View.OnTouchListener() {
@@ -186,8 +187,14 @@ public class FloatingService extends Service {
 
     // click callback
     // longclick call back could be called by above runnable object.
+    static int tt = 0;
     public void onClick() {
         // startActivity()
+        if (tt == 0)
+            btnImg.setImageResource(R.drawable.ic_add_black_24dp);
+        else
+            btnImg.setImageResource(R.drawable.arrow);
+        tt = 1-tt;
     }
 
     @Override

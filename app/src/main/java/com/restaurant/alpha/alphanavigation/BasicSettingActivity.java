@@ -35,12 +35,5 @@ public class BasicSettingActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         startService(new Intent(getApplicationContext(), FloatingService.class));
-//        Button but = (Button) findViewById(R.id.servicetest);
-//
-//        but.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        }
     }
 }
