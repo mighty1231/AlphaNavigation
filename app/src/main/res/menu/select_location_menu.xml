@@ -1,7 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".Create_Event">
-    <item android:id="@+id/action_send"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Create_Event">
+    <item
+        android:id="@+id/action_send"
         android:title="@string/menu_name"
         app:showAsAction="always" />
 </menu>

@@ -8,7 +8,7 @@ public class AlphaNavigation extends Application {
     public void onCreate() {
         super.onCreate();
 
-        /* initialize singleton(s) */
+        // initialize singleton(s)
         CommonData.getInstance();
 
         /* initialize db, and... such things here
