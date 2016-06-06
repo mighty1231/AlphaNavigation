@@ -40,6 +40,7 @@ import java.util.Locale;
  */
 public class ArrowRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "ArrowRenderer";
+    private float destAngle = 0.0f;
     private float[] fusedOrientation = new float[3];
 
     /**
@@ -410,15 +411,12 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.rotateM(mModelMatrix, 0, (float) (fusedOrientation[0]*59.29578), 0.0f, 0.0f, 1.0f);
 
-        if (-90.0f < fusedOrientation[0]*59.29578 && fusedOrientation[0]*59.29578 < 90.0f) {
-            Matrix.rotateM(mModelMatrix, 0, (float) (fusedOrientation[1]*59.29578), 1.0f, 0.0f, 0.0f);
-            Matrix.rotateM(mModelMatrix, 0, -(float) (fusedOrientation[2]*59.29578), 0.0f, 1.0f, 0.0f);
-        } else {
-            Matrix.rotateM(mModelMatrix, 0, -(float) (fusedOrientation[1]*59.29578), 1.0f, 0.0f, 0.0f);
-            Matrix.rotateM(mModelMatrix, 0, (float) (fusedOrientation[2]*59.29578), 0.0f, 1.0f, 0.0f);
-        }
+        Matrix.rotateM(mModelMatrix, 0, -(float) Math.toDegrees(fusedOrientation[2]), 0.0f, 1.0f, 0.0f);
+        Matrix.rotateM(mModelMatrix, 0, (float) Math.toDegrees(fusedOrientation[1]), 1.0f, 0.0f, 0.0f);
+        Matrix.rotateM(mModelMatrix, 0, -(float) Math.toDegrees(fusedOrientation[0]), 0.0f, 0.0f, -1.0f);
+
+        Matrix.rotateM(mModelMatrix, 0, -destAngle, 0.0f, 0.0f, 1.0f);
 
         // Pass in the position information
         mCubePositions.position(0);
@@ -554,6 +552,12 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
         }
 
         return programHandle;
+    }
+
+    public void setDestination(float dEW, float dNS) {
+        if (dEW != 0.0f || dNS != 0.0f) {
+            destAngle = (float) Math.toDegrees(Math.atan2(dEW, dNS));
+        }
     }
 
     public void setFusedOrientation(float a1, float a2, float a3) {

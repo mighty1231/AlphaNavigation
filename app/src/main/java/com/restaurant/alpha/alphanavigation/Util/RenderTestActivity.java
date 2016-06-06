@@ -18,6 +18,9 @@ public class RenderTestActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_render_test);
 
         arrowView = new ArrowView(this);
+
+        // NNE direction
+        arrowView.setDestination(1.0f, 2.0f);
         setContentView(arrowView);
         SensorFusionListener.getInstance(null).activate();
     }

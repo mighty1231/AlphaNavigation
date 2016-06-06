@@ -51,6 +51,12 @@ public class ArrowView extends GLSurfaceView {
         refreshTimer.scheduleAtFixedRate(new refreshTask(), 0, 30);
     }
 
+    /* dEW = E (+) W (-)
+     * dNS = N (+) S (-) */
+    public void setDestination(float dEW, float dNS) {
+        mRenderer.setDestination(dEW, dNS);
+        requestRender();
+    }
     class refreshTask extends TimerTask {
         public void run() {
             float[] fusedOrientation = SensorFusionListener.getInstance(null).getFusedOrientation();
