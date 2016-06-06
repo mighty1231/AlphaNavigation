@@ -20,7 +20,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <RelativeLayout
-            android:id="@+id/tmapapi2"
+            android:id="@+id/layout_tMapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

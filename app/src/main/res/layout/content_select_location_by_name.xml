@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:imeOptions="actionSearch"
+        android:drawableEnd="@drawable/ic_search_black_24dp"
         />
 
     <android.support.v7.widget.RecyclerView

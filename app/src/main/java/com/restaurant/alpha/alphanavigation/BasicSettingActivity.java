@@ -40,9 +40,10 @@ public class BasicSettingActivity extends AppCompatActivity {
     private String destinationName;
     private double[] destinationPosition;
 
-    private Button btNaviStart = null;
+    // DELETE THIS >>
     private Button btRenderTest = null;
     private Button btFusionTest = null;
+    // <<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +56,13 @@ public class BasicSettingActivity extends AppCompatActivity {
         RecyclerView historyRecyclerView = (RecyclerView)findViewById(R.id.history_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
         destination = (TextView)findViewById(R.id.destination_name);
-        TextView navigationStart = (TextView) findViewById(R.id.navigation_start);
+        Button navigationStart = (Button)findViewById(R.id.navigation_start);
+        ImageView deleteAllHistory = (ImageView)findViewById(R.id.delete_all_history);
+
+        // DELETE THIS >>
         btRenderTest = (Button) findViewById(R.id.renderTest);
-        btNaviStart = (Button) findViewById(R.id.camNaviTest);
         btFusionTest = (Button) findViewById(R.id.fusionTest);
-        TextView deleteAllHistory = (TextView)findViewById(R.id.delete_all_history);
+        // <<
 
         assert(addStops != null);
         assert(stopRecyclerView != null);
@@ -208,14 +211,7 @@ public class BasicSettingActivity extends AppCompatActivity {
             }
         });
 
-        btNaviStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CameraNavigationActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        // DELETE THIS >>
         btRenderTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,6 +227,7 @@ public class BasicSettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // <<
 
         deleteAllHistory.setOnClickListener(new View.OnClickListener() {
             @Override

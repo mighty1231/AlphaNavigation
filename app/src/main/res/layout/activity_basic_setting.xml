@@ -12,13 +12,20 @@
         android:layout_width="match_parent"
         />
 
-    <TextView
-        android:id="@+id/navigation_start"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Navigation Start"/>
-
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        android:textColor="@color/colorOurLight"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="START NAVIGATION"
+        android:layout_gravity="center"
+        android:background="@drawable/little_round_square"
+        android:drawableStart="@drawable/ic_directions_run_black_24dp"
+        android:id="@+id/navigation_start"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"

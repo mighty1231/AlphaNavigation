@@ -49,6 +49,33 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
         // - get element from your data at this position
         // - replace the contents of the view with that element
         holder.myTextView.setText(myData.get(position));
+        holder.myTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
+                alertBuilder.setTitle("Do you want to delete?");
+                alertBuilder.setMessage("You will remove this data");
+
+                alertBuilder.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                myData.remove(position);
+                                stopLocation.remove(position);
+                                notifyDataSetChanged();
+                            }
+                        });
+                alertBuilder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            }
+        });
         holder.myImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
