@@ -12,6 +12,7 @@ import java.util.TimerTask;
 public class SensorFusionListener implements SensorEventListener {
     private static SensorFusionListener mInstance = null;
     private SensorManager sensorManager;
+    private int refcount = 0;
 
     // angular speeds from gyro
     private float[] gyro = new float[3];
@@ -57,39 +58,45 @@ public class SensorFusionListener implements SensorEventListener {
     }
 
     public void activate() {
-        gyroOrientation[0] = 0.0f;
-        gyroOrientation[1] = 0.0f;
-        gyroOrientation[2] = 0.0f;
+        if (refcount == 0) {
+            gyroOrientation[0] = 0.0f;
+            gyroOrientation[1] = 0.0f;
+            gyroOrientation[2] = 0.0f;
 
-        // initialise gyroMatrix with identity matrix
-        gyroMatrix[0] = 1.0f;
-        gyroMatrix[1] = 0.0f;
-        gyroMatrix[2] = 0.0f;
-        gyroMatrix[3] = 0.0f;
-        gyroMatrix[4] = 1.0f;
-        gyroMatrix[5] = 0.0f;
-        gyroMatrix[6] = 0.0f;
-        gyroMatrix[7] = 0.0f;
-        gyroMatrix[8] = 1.0f;
-        sensorManager.registerListener(this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_FASTEST);
+            // initialise gyroMatrix with identity matrix
+            gyroMatrix[0] = 1.0f;
+            gyroMatrix[1] = 0.0f;
+            gyroMatrix[2] = 0.0f;
+            gyroMatrix[3] = 0.0f;
+            gyroMatrix[4] = 1.0f;
+            gyroMatrix[5] = 0.0f;
+            gyroMatrix[6] = 0.0f;
+            gyroMatrix[7] = 0.0f;
+            gyroMatrix[8] = 1.0f;
+            sensorManager.registerListener(this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_FASTEST);
 
-        sensorManager.registerListener(this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
-                SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+                    SensorManager.SENSOR_DELAY_FASTEST);
 
-        sensorManager.registerListener(this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                    SensorManager.SENSOR_DELAY_FASTEST);
 
-        fuseTimer = new Timer();
-        fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(),
-                1000, TIME_CONSTANT);
+            fuseTimer = new Timer();
+            fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(),
+                    1000, TIME_CONSTANT);
+        }
+        refcount += 1;
     }
     public void deactivate() {
-        sensorManager.unregisterListener(this);
-        fuseTimer.cancel();
+        refcount -= 1;
+        if (refcount == 0) {
+            sensorManager.unregisterListener(this);
+            fuseTimer.cancel();
+        }
     }
 
     public void setMagnet(float[] sensorValues) {

@@ -16,6 +16,7 @@
 package com.restaurant.alpha.alphanavigation.Util;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.hardware.Sensor;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
@@ -47,6 +48,7 @@ public class ArrowView extends GLSurfaceView {
 
         // Render the view only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
         refreshTimer.scheduleAtFixedRate(new refreshTask(), 0, 30);
     }

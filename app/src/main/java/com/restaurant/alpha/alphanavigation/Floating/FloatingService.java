@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.hardware.Sensor;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,11 +18,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.restaurant.alpha.alphanavigation.R;
+import com.restaurant.alpha.alphanavigation.Util.ArrowView;
+import com.restaurant.alpha.alphanavigation.Util.RenderTestActivity;
+import com.restaurant.alpha.alphanavigation.Util.SensorFusionListener;
 
 public class FloatingService extends Service{
     private WindowManager windowManager;
     private RelativeLayout btnView, removeView;
-    private ImageView btnImg, removeImg;
+    private ArrowView btnImg;
+    private ImageView removeImg;
     private int btnView_w = 0, btnView_h = 0;
     private int removeView_w = 0, removeView_h = 0;
     private int removeView_cx;
@@ -44,6 +49,7 @@ public class FloatingService extends Service{
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getSize(szWindow);
+        SensorFusionListener.getInstance(null).activate();
         removeView_cx = szWindow.x/2;
         removeView_cy = (int) (szWindow.y - (25 * getApplicationContext().getResources().getDisplayMetrics().density));
 
@@ -64,7 +70,8 @@ public class FloatingService extends Service{
         windowManager.addView(removeView, rmvParams);
 
         btnView = (RelativeLayout)inflater.inflate(R.layout.floating_btn, null);
-        btnImg = (ImageView)btnView.findViewById(R.id.floating_btn);
+        btnImg = new ArrowView(this);
+        btnView.addView(btnImg);
         WindowManager.LayoutParams btnParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -104,6 +111,8 @@ public class FloatingService extends Service{
                 if (removeView_w == 0) {
                     removeView_w = removeView.getWidth();
                     removeView_h = removeView.getHeight();
+                    btnImg.getLayoutParams().width = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
+                    btnImg.getLayoutParams().height = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
                     btnView_w = btnView.getWidth();
                     btnView_h = btnView.getHeight();
                 }
@@ -190,11 +199,6 @@ public class FloatingService extends Service{
     static int tt = 0;
     public void onClick() {
         // startActivity()
-        if (tt == 0)
-            btnImg.setImageResource(R.drawable.ic_add_black_24dp);
-        else
-            btnImg.setImageResource(R.drawable.arrow);
-        tt = 1-tt;
     }
 
     @Override
@@ -202,6 +206,7 @@ public class FloatingService extends Service{
         super.onDestroy();
         if (btnView != null) windowManager.removeView(btnView);
         if (removeView != null) windowManager.removeView(removeView);
+        SensorFusionListener.getInstance(null).deactivate();
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

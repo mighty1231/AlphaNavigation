@@ -328,7 +328,7 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 glUnused, EGLConfig config)
     {
         // Set the background clear color to black.
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GLES20.glClearColor(0.0f, 0.0f, 0.5f, 0.5f);
 
         // Use culling to remove back faces.
         GLES20.glEnable(GLES20.GL_CULL_FACE);
@@ -375,10 +375,10 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
         // Create a new perspective projection matrix. The height will stay the same
         // while the width will vary as per aspect ratio.
         final float ratio = (float) width / height;
-        final float left = -ratio;
-        final float right = ratio;
-        final float bottom = -1.0f;
-        final float top = 1.0f;
+        final float left = -ratio*0.12f;
+        final float right = ratio*0.12f;
+        final float bottom = -1.0f*0.12f;
+        final float top = 1.0f*0.12f;
         final float near = 0.5f;
         final float far = 6.0f;
 
