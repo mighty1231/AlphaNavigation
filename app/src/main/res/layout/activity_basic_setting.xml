@@ -23,4 +23,17 @@
         android:tint="@color/colorOurLight"
         android:src="@drawable/ic_directions_run_black_24dp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Render test"
+        android:id="@+id/renderTest"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="CamNavi test"
+        android:id="@+id/camNaviTest"/>
+
 </LinearLayout>
