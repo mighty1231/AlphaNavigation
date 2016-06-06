@@ -15,6 +15,9 @@ public class CommonData {
     private TMapPoint destination = null;
     private ArrayList<TMapPoint> stops = null;
     private TMapPoint currentLocation = null;
+    private double remainStraightDistance;
+    private double remainDistance;
+    private int nextPoint = 1;
 
     private TMapPolyLine pathFound = null;
     private ArrayList<TMapPoint> simplePathPoint = null;
@@ -50,6 +53,18 @@ public class CommonData {
         simplePathPoint = items;
     }
 
+    public void setRemainStraightDistance(Double distance) {
+        remainStraightDistance = distance;
+    }
+
+    public void setRemainDistance (Double distance) {
+        remainDistance = distance;
+    }
+
+    public void setNextPoint () {
+        nextPoint++;
+    }
+
     public TMapPoint getDestination() {
         return destination;
     }
@@ -68,5 +83,21 @@ public class CommonData {
 
     public ArrayList<TMapPoint> getSimplePathPoint() {
         return simplePathPoint;
+    }
+
+    public double getRemainStraightDistance() {
+        return remainStraightDistance;
+    }
+
+    public double getRemainDistance() {
+        return remainDistance;
+    }
+
+    public int getNextPointRaw() {
+        return nextPoint;
+    }
+
+    public TMapPoint getNextPoint() {
+        return simplePathPoint.get(nextPoint);
     }
 }
