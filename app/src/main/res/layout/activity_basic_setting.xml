@@ -12,11 +12,15 @@
         android:layout_width="match_parent"
         />
 
-    <TextView
+    <ImageView
+        android:background="@drawable/little_round_square"
+        android:layout_margin="8dp"
+        android:padding="16dp"
         android:id="@+id/navigation_start"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Navigation Start"/>
+        android:tint="@color/colorOurLight"
+        android:src="@drawable/ic_directions_run_black_24dp"/>
 
 </LinearLayout>

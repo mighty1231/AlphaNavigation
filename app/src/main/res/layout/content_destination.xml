@@ -6,14 +6,28 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:background="@drawable/round_square"
         android:text="@string/title_destination_content"/>
 
     <TextView
         android:id="@+id/destination_name"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/colorOurLight"
+        android:background="@drawable/little_round_square"
         android:layout_width="match_parent"
+        android:drawablePadding="8dp"
+        android:drawableEnd="@drawable/ic_my_location_black_24dp"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_height="0dp"
-        android:layout_weight="4" />
+        android:layout_weight="13" />
 
 </LinearLayout>

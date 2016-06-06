@@ -47,8 +47,8 @@ public class BasicSettingActivity extends AppCompatActivity {
         RecyclerView historyRecyclerView = (RecyclerView)findViewById(R.id.history_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
         destination = (TextView)findViewById(R.id.destination_name);
-        TextView navigationStart = (TextView)findViewById(R.id.navigation_start);
-        TextView deleteAllHistory = (TextView)findViewById(R.id.delete_all_history);
+        ImageView navigationStart = (ImageView)findViewById(R.id.navigation_start);
+        ImageView deleteAllHistory = (ImageView)findViewById(R.id.delete_all_history);
 
         assert(addStops != null);
         assert(stopRecyclerView != null);

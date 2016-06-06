@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -43,6 +44,47 @@ public class SelectLocationByNameActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        final String keyword = editText.getText().toString();
+
+                        TMapData tMapData = new TMapData();
+                        tMapData.findAllPOI(keyword, new TMapData.FindAllPOIListenerCallback() {
+                            @Override
+                            public void onFindAllPOI(final ArrayList<TMapPOIItem> arrayList) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        searchByNameAdapter.deleteAllLocation();
+                                        if (arrayList.size() != 0) {
+                                            int size = maxSearchSize;
+                                            if (arrayList.size() < maxSearchSize) size = arrayList.size();
+                                            for (int i = 0; i < size; i++) {
+                                                searchByNameAdapter.addLocation(arrayList.get(i));
+                                            }
+                                        }
+                                        else {
+                                            Toast.makeText(getApplicationContext(), "No result about " + keyword, Toast.LENGTH_SHORT).show();
+                                        }
+                                        searchByNameAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        });
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(final TextView v, int actionId, KeyEvent event) {
@@ -84,8 +126,7 @@ public class SelectLocationByNameActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.select_location_menu, menu);
+        // Inflate the menu; this adds items to the action bar if it is present
         return true;
     }
 
