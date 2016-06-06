@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class BasicSettingActivity extends AppCompatActivity {
         RecyclerView historyRecyclerView = (RecyclerView)findViewById(R.id.history_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
         destination = (TextView)findViewById(R.id.destination_name);
-        ImageView navigationStart = (ImageView)findViewById(R.id.navigation_start);
+        Button navigationStart = (Button)findViewById(R.id.navigation_start);
         ImageView deleteAllHistory = (ImageView)findViewById(R.id.delete_all_history);
 
         assert(addStops != null);
