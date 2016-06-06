@@ -10,10 +10,6 @@ import com.restaurant.alpha.alphanavigation.R;
 import java.util.Locale;
 
 public class RenderTestActivity extends AppCompatActivity {
-    SensorFusionListener sensorFusionListener = null;
-    TextView textView = null;
-    Handler handler = null;
-    private float[] fusedOrientation;
     ArrowView arrowView = null;
 
     @Override
@@ -23,21 +19,13 @@ public class RenderTestActivity extends AppCompatActivity {
 
         arrowView = new ArrowView(this);
         setContentView(arrowView);
-//        sensorFusionListener = new SensorFusionListener(this);
-//        sensorFusionListener.create();
-//
-//        textView = (TextView) findViewById(R.id.renderTestTV);
-//
-//        handler = new Handler();
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                fusedOrientation = sensorFusionListener.getFusedOrientation();
-//
-//                textView.setText(String.format(Locale.KOREA, "[%f, %f, %f]", fusedOrientation[0], fusedOrientation[1], fusedOrientation[2]));
-//                handler.postDelayed(this, 100);
-//            }
-//        });
+        SensorFusionListener.getInstance(null).activate();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SensorFusionListener.getInstance(null).deactivate();
     }
 
     @Override
@@ -48,6 +36,7 @@ public class RenderTestActivity extends AppCompatActivity {
         // you should consider de-allocating objects that
         // consume significant memory here.
         arrowView.onPause();
+        SensorFusionListener.getInstance(null).deactivate();
     }
 
     @Override
@@ -57,6 +46,7 @@ public class RenderTestActivity extends AppCompatActivity {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         arrowView.onResume();
+        SensorFusionListener.getInstance(null).activate();
     }
 
 }

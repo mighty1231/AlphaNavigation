@@ -17,9 +17,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".AlphaNavigation"
@@ -46,14 +48,16 @@
         <activity
             android:name=".TwoDMap.TwoDMapActivity"
             android:label="n"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".Floating.FloatingService" />
 
         <activity android:name=".Util.RenderTestActivity" />
-        <activity android:name=".CameraNavigation.CameraNavigationActivity"
+        <activity
+            android:name=".CameraNavigation.CameraNavigationActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity android:name=".Util.FusionTestActivity"></activity>
     </application>
 
 </manifest>

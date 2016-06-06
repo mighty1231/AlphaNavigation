@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.restaurant.alpha.alphanavigation.Util.SensorFusionListener;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapPoint;
 
@@ -24,6 +25,8 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
 
         // initialize singleton(s)
         CommonData.getInstance();
+        SensorFusionListener.getInstance(this);
+
 
         TMapGpsManager gps = new TMapGpsManager(this);
         gps.setMinTime(1000);

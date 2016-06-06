@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.restaurant.alpha.alphanavigation.CameraNavigation.CameraNavigationActivity;
+import com.restaurant.alpha.alphanavigation.Util.FusionTestActivity;
 import com.restaurant.alpha.alphanavigation.Util.RenderTestActivity;
 import com.restaurant.alpha.alphanavigation.TwoDMap.TwoDMapActivity;
 import com.skp.Tmap.TMapPoint;
@@ -41,6 +42,7 @@ public class BasicSettingActivity extends AppCompatActivity {
 
     private Button btNaviStart = null;
     private Button btRenderTest = null;
+    private Button btFusionTest = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class BasicSettingActivity extends AppCompatActivity {
         TextView navigationStart = (TextView) findViewById(R.id.navigation_start);
         btRenderTest = (Button) findViewById(R.id.renderTest);
         btNaviStart = (Button) findViewById(R.id.camNaviTest);
+        btFusionTest = (Button) findViewById(R.id.fusionTest);
         TextView deleteAllHistory = (TextView)findViewById(R.id.delete_all_history);
 
         assert(addStops != null);
@@ -217,6 +220,14 @@ public class BasicSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RenderTestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btFusionTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FusionTestActivity.class);
                 startActivity(intent);
             }
         });
