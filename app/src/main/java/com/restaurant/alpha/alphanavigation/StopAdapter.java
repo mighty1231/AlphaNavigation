@@ -93,9 +93,14 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     }
 
     public void addLocation(double[] position, String name) {
-        this.stopLocation.add(new TMapPoint(position[0], position[1]));
-        myData.add(name);
-        notifyDataSetChanged();
+        if(myData.size() >= 3) {
+            Toast.makeText(context, "Cannot add more than 3 stops", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            this.stopLocation.add(new TMapPoint(position[0], position[1]));
+            myData.add(name);
+            notifyDataSetChanged();
+        }
     }
 
     public ArrayList<TMapPoint> getStopLocation() {
