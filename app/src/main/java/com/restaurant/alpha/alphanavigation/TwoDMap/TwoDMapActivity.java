@@ -46,7 +46,7 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar_2D);
         assert toolbar != null;
-        toolbar.setTitle("Map");
+        //toolbar.setTitle("Map");
         setSupportActionBar(toolbar);
 
         tMapView = new TMapView(this);
@@ -82,7 +82,8 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         TMapPolyLine simpledPathData = separateLine(pathData.getLinePoint());
 //                        tMapView.addTMapPolyLine("SIMPLE", simpledPathData);
 
-                        CommonData.getInstance().setPathFound(pathData.getLinePoint());
+                        CommonData.getInstance().setPathFound(pathData);
+                        CommonData.getInstance().setSimplePathPoint(simpledPathData.getLinePoint());
 
                         int i = 0;
                         for (TMapPoint point : simpledPathData.getLinePoint()) {
@@ -171,6 +172,9 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
         int id = item.getItemId();
         switch (id) {
             case R.id.action_back_to_3d:
+                Intent intent = new Intent(getApplicationContext(), CameraNavigationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.action_current:

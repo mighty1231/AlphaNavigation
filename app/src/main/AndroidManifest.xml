@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TwoDMap.TwoDMapActivity"
-            android:label="n"
+            android:label="@string/title_activity_2d_map"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".Floating.FloatingService" />
@@ -55,9 +55,13 @@
         <activity android:name=".Util.RenderTestActivity" />
         <activity
             android:name=".CameraNavigation.CameraNavigationActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
-        <activity android:name=".Util.FusionTestActivity"></activity>
+        <activity android:name=".Util.FusionTestActivity" />
+
+        <activity
+            android:name=".TwoDMap.SimpleTwoDMapActivity"
+            android:label="@string/title_activity_2d_map"/>
     </application>
 
 </manifest>

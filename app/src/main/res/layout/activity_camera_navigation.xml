@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     >
     <FrameLayout
         android:id="@+id/camera_preview"
@@ -17,9 +17,10 @@
             android:padding="12dip"
             android:layout_margin="4dip"
 
-            android:background="#88000000"
+            android:background="@drawable/right_arrow_transparent"
             android:textColor="#ffffffff"
 
+            android:id="@+id/button_floating"
             android:text="Floating View"/>
 
         <Button
@@ -30,10 +31,18 @@
             android:padding="12dip"
             android:layout_margin="4dip"
 
-            android:background="#88000000"
+            android:background="@drawable/left_arrow_transparent"
             android:textColor="#ffffffff"
-
+            android:id="@+id/button_2d"
             android:text="2d Navigation"/>
+
+        <ImageView
+            android:tint="@color/colorOurDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="40dp"
+            android:src="@drawable/ic_directions_run_black_24dp"/>
     </FrameLayout>
 
 </LinearLayout>

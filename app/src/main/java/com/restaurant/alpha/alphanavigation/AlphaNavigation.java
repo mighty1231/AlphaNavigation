@@ -17,6 +17,7 @@ import io.realm.RealmConfiguration;
 
 public class AlphaNavigation extends Application implements TMapGpsManager.onLocationChangedCallback {
 
+    private boolean firstLocation = false;
     public static TMapGpsManager gps = null;
 
     public TMapGpsManager.onLocationChangedCallback callback1 = null;
@@ -53,6 +54,11 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         CommonData.getInstance().setCurrentLocation(new TMapPoint(latitude, longitude));
+
+        if(!firstLocation) {
+            Toast.makeText(getApplicationContext(), "Get Location", Toast.LENGTH_SHORT).show();
+            firstLocation = true;
+        }
 
         if ( callback1 != null )
             callback1.onLocationChange(location);

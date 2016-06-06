@@ -1,14 +1,18 @@
 package com.restaurant.alpha.alphanavigation.CameraNavigation;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.restaurant.alpha.alphanavigation.R;
+import com.restaurant.alpha.alphanavigation.TwoDMap.SimpleTwoDMapActivity;
 
 public class CameraNavigationActivity extends Activity {
     private Camera mCamera;
@@ -20,6 +24,7 @@ public class CameraNavigationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_navigation);
         mCameraNavigationLayout = (FrameLayout) findViewById(R.id.camera_preview);
+        Button twoDMapbutton = (Button)findViewById(R.id.button_2d);
         int viewCount = mCameraNavigationLayout.getChildCount();
 
         // Create an instance of Camera
@@ -33,6 +38,14 @@ public class CameraNavigationActivity extends Activity {
             Toast.makeText(this, "Camera is not available", Toast.LENGTH_LONG);
         }
 
+        twoDMapbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SimpleTwoDMapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 //        // Make all other views being front of the camera view.
 //        Log.d("CameraNavigation", "viewcound = " + viewCount);
 //        for (int i = 0; i < viewCount; i++) {
