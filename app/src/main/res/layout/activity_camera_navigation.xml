@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+
+            android:padding="12dip"
+            android:layout_margin="4dip"
+
+            android:background="#88000000"
+            android:textColor="#ffffffff"
+
+            android:text="Floating View"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+
+            android:padding="12dip"
+            android:layout_margin="4dip"
+
+            android:background="#88000000"
+            android:textColor="#ffffffff"
+
+            android:text="2d Navigation"/>
+    </FrameLayout>
+
+</LinearLayout>

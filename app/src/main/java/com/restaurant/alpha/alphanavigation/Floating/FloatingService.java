@@ -201,6 +201,7 @@ public class FloatingService extends Service{
     public void onDestroy() {
         super.onDestroy();
         if (btnView != null) windowManager.removeView(btnView);
+        if (removeView != null) windowManager.removeView(removeView);
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

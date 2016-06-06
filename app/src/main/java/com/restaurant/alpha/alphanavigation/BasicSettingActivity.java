@@ -9,10 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.restaurant.alpha.alphanavigation.CameraNavigation.CameraNavigationActivity;
+import com.restaurant.alpha.alphanavigation.Util.RenderTestActivity;
 import com.restaurant.alpha.alphanavigation.TwoDMap.TwoDMapActivity;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapTapi;
@@ -29,6 +32,9 @@ public class BasicSettingActivity extends AppCompatActivity {
     private String destinationName;
     private double[] destinationPosition;
 
+    private Button btNaviStart = null;
+    private Button btRenderTest = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +45,9 @@ public class BasicSettingActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.stop_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);
         destination = (TextView)findViewById(R.id.destination_name);
-        TextView navigationStart = (TextView)findViewById(R.id.navigation_start);
+        TextView navigationStart = (TextView) findViewById(R.id.navigation_start);
+        btRenderTest = (Button) findViewById(R.id.renderTest);
+        btNaviStart = (Button) findViewById(R.id.camNaviTest);
 
         assert(addStops != null);
         assert(recyclerView != null);
@@ -144,6 +152,22 @@ public class BasicSettingActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
+            }
+        });
+
+        btNaviStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CameraNavigationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btRenderTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RenderTestActivity.class);
+                startActivity(intent);
             }
         });
     }
