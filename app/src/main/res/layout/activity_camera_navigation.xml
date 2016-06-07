@@ -48,12 +48,6 @@
             android:textColor="@color/colorWhite"
             android:text="TESTING"/>
 
-        <com.restaurant.alpha.alphanavigation.Util.ArrowView
-            android:id="@+id/arrow_view_in_camnavi"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="top|center"
-            android:layout_marginTop="20dp"/>
 
         <ImageView
             android:tint="@color/colorOurDark"

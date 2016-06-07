@@ -38,7 +38,7 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         gps = new TMapGpsManager(this);
         gps.setMinTime(500);
         gps.setMinDistance(1);
-        gps.setProvider(TMapGpsManager.NETWORK_PROVIDER);
+        gps.setProvider(TMapGpsManager.GPS_PROVIDER);
         gps.OpenGps();
 
         /**

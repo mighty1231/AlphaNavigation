@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -45,7 +46,15 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
-        arrowView = (ArrowView) findViewById(R.id.arrow_view_in_camnavi);
+        arrowView = new ArrowView(this);
+        mCameraNavigationLayout.addView(arrowView, -1);
+        FrameLayout.LayoutParams arrowParams = (FrameLayout.LayoutParams) arrowView.getLayoutParams();
+        arrowParams.width = (int) (80 * getApplicationContext().getResources().getDisplayMetrics().density);
+        arrowParams.height = (int) (80 * getApplicationContext().getResources().getDisplayMetrics().density);
+        arrowParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        arrowParams.topMargin = (int) (60 * getApplicationContext().getResources().getDisplayMetrics().density);
+        arrowView.setLayoutParams(arrowParams);
+        SensorFusionListener.getInstance(null).activate("CameraNavigationActivity");
 
         assert(mCameraNavigationLayout != null);
         assert(remainDistance != null);
@@ -57,7 +66,9 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         } else {
             Toast.makeText(this, "Camera is not available", Toast.LENGTH_LONG).show();
         }
-        SensorFusionListener.getInstance(null).activate("CameraNavigationActivity");
+
+        // two surface views
+        arrowView.setZOrderMediaOverlay(true);
 
         twoDMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +113,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         super.onDestroy();
         ((AlphaNavigation) getApplication()).deleteLocationChangeCallBackCamera();
         if (mCamera != null) mCamera.release();
+        SensorFusionListener.getInstance(null).deactivate("CameraNavigationActivity");
     }
     /** A safe way to get an instance of the Camera object. */
     public static Camera getCameraInstance(){
