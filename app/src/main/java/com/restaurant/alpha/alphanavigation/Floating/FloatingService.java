@@ -27,15 +27,21 @@ public class FloatingService extends Service{
     private RelativeLayout btnView, removeView;
     private ArrowView btnImg;
     private ImageView removeImg;
-    private int btnView_w = 0, btnView_h = 0;
-    private int removeView_w = 0, removeView_h = 0;
+
+
+    private Point szWindow = new Point();
+    private float density;
+    private int btnView_w;
+    private int btnView_h;
+    private int removeView_w;
+    private int removeView_h;
+    private int removeView_d; // difference on size of x and y
     private int removeView_cx;
     private int removeView_cy;
 
     private int iv_x, iv_y;
     private int lastclick_x, lastclick_y;
 
-    private Point szWindow = new Point();
 
     public FloatingService() {
     }
@@ -46,48 +52,53 @@ public class FloatingService extends Service{
     }
 
     public void start(){
-
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getSize(szWindow);
-        SensorFusionListener.getInstance(null).activate();
-        removeView_cx = szWindow.x/2;
-        removeView_cy = (int) (szWindow.y - (25 * getApplicationContext().getResources().getDisplayMetrics().density));
-        Log.d("FloatingService", String.format("x y cx cy %d %d %d %d", szWindow.x, szWindow.y, removeView_cx, removeView_cy));
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        SensorFusionListener.getInstance(null).activate();
+
+        // initialize views. 1. removeView. 2. btnView
+        density = getApplicationContext().getResources().getDisplayMetrics().density;
+        btnView_w = (int)(60 * density);
+        btnView_h = (int)(60 * density);
+        removeView_w = (int)(80 * density);
+        removeView_h = (int)(80 * density);
+        removeView_d = (int)(30 * density);
+        removeView_cx = szWindow.x/2;
+        removeView_cy = (int) (szWindow.y - 25*density - removeView_h/2);
+        Log.d("FloatingService", String.format("%f %d %d %d %d %d %d %d", density, btnView_w, btnView_h, removeView_w, removeView_h, removeView_d, removeView_cx, removeView_cy));
 
         removeView = (RelativeLayout)inflater.inflate(R.layout.floating_remove, null);
-        removeImg = (ImageView)removeView.findViewById(R.id.floating_remove);
-        removeView.setVisibility(View.GONE);
-        WindowManager.LayoutParams rmvParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
+        removeImg = (ImageView)removeView.findViewById(R.id.floating_remove_img);
+        WindowManager.LayoutParams removeParams = new WindowManager.LayoutParams(
+                removeView_w + removeView_d, removeView_h + removeView_d,
                 WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        rmvParams.gravity = Gravity.TOP | Gravity.LEFT;
-        rmvParams.x = 0;
-        rmvParams.y = 100;
-        windowManager.addView(removeView, rmvParams);
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                PixelFormat.TRANSLUCENT
+        );
+        removeParams.gravity = Gravity.TOP | Gravity.LEFT;
+        removeParams.x = removeView_cx - (removeView_w + removeView_d) / 2;
+        removeParams.y = removeView_cy - (removeView_h + removeView_d) / 2;
+        removeView.setVisibility(View.GONE);
+        windowManager.addView(removeView, removeParams);
 
         btnView = (RelativeLayout)inflater.inflate(R.layout.floating_btn, null);
         btnImg = new ArrowView(this);
         btnView.addView(btnImg);
-        btnImg.getLayoutParams().width = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
-        btnImg.getLayoutParams().height = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
+
+        btnImg.getLayoutParams().width = btnView_w;
+        btnImg.getLayoutParams().height = btnView_h;
         WindowManager.LayoutParams btnParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
         btnParams.gravity = Gravity.TOP | Gravity.LEFT;
         windowManager.addView(btnView, btnParams);
 
-
         // set click listener
         btnView.setOnTouchListener(new View.OnTouchListener() {
-            private double removeView_scaleconst = 1.5; // size multiple if head goes to specific region
             private boolean removeView_visible = false;
             private boolean remove_bound = false;
             private long lClickTime;
@@ -97,26 +108,20 @@ public class FloatingService extends Service{
                 @Override
                 public void run() {
                     Log.d("floatingService", "run!!");
-                    removeView_visible = true;
+                    if (removeView_visible == false) {
+                        removeView_visible = true;
 
-                    WindowManager.LayoutParams rmvParams = (WindowManager.LayoutParams) removeView.getLayoutParams();
-                    removeImg.getLayoutParams().width = removeView_w;
-                    removeImg.getLayoutParams().height = removeView_h;
-                    rmvParams.x = removeView_cx - removeView_w/2;
-                    rmvParams.y = removeView_cy - removeView_h/2;
-                    windowManager.updateViewLayout(removeView, rmvParams);
-                    removeView.setVisibility(View.VISIBLE);
+                        RelativeLayout.LayoutParams removeParams = (RelativeLayout.LayoutParams) removeImg.getLayoutParams();
+                        removeParams.width = removeView_w;
+                        removeParams.height = removeView_h;
+                        removeImg.setLayoutParams(removeParams);
+                        removeView.setVisibility(View.VISIBLE);
+                    }
                 }
             };
 
             @Override public boolean onTouch(View v, MotionEvent event) {
                 WindowManager.LayoutParams params = (WindowManager.LayoutParams) btnView.getLayoutParams();
-                if (removeView_w == 0) {
-                    removeView_w = removeView.getWidth();
-                    removeView_h = removeView.getHeight();
-                    btnView_w = btnView.getWidth();
-                    btnView_h = btnView.getHeight();
-                }
                 int event_x = (int) event.getRawX();
                 int event_y = (int) event.getRawY();
                 switch(event.getAction()) {
@@ -138,7 +143,6 @@ public class FloatingService extends Service{
                         removeView_visible = false;
                         removeView.setVisibility(View.GONE);
 
-                        Log.d("floatingService", "up with remove_bound = "+remove_bound);
                         if (remove_bound) {
                             stopService(new Intent(FloatingService.this, FloatingService.class));
                             remove_bound = false;
@@ -159,32 +163,26 @@ public class FloatingService extends Service{
                                 if (!remove_bound) {
                                     remove_bound = true;
 
-                                    WindowManager.LayoutParams rmvParams = (WindowManager.LayoutParams) removeView.getLayoutParams();
-                                    removeImg.getLayoutParams().width = (int)(removeView_w * removeView_scaleconst);
-                                    removeImg.getLayoutParams().height = (int)(removeView_h * removeView_scaleconst);
-                                    rmvParams.x = removeView_cx - (int)(removeView_w * removeView_scaleconst)/2;
-                                    rmvParams.y = removeView_cy - (int)(removeView_h * removeView_scaleconst)/2;
-                                    windowManager.updateViewLayout(removeView, rmvParams);
+                                    RelativeLayout.LayoutParams removeParams = (RelativeLayout.LayoutParams) removeImg.getLayoutParams();
+                                    removeParams.width = removeView_w + removeView_d;
+                                    removeParams.height = removeView_h + removeView_d;
+                                    removeImg.setLayoutParams(removeParams);
 
                                     WindowManager.LayoutParams btnParams = (WindowManager.LayoutParams) btnView.getLayoutParams();
                                     btnParams.x = removeView_cx - btnView_w/2;
                                     btnParams.y = removeView_cy - btnView_h/2;
                                     windowManager.updateViewLayout(btnView, btnParams);
-                                } else {
-                                    if (removeView.getLayoutParams().width == removeView_w) {
-                                        Log.e("floatingService", "EEEEEEERORR -- this should not be happened");
-                                    }
                                 }
                                 break;
                             } else {
-                                remove_bound = false;
+                                if (remove_bound) {
+                                    remove_bound = false;
 
-                                WindowManager.LayoutParams rmvParams = (WindowManager.LayoutParams) removeView.getLayoutParams();
-                                removeImg.getLayoutParams().width = removeView_w;
-                                removeImg.getLayoutParams().height = removeView_h;
-                                rmvParams.x = removeView_cx - removeView_w/2;
-                                rmvParams.y = removeView_cy - removeView_h/2;
-                                windowManager.updateViewLayout(removeView, rmvParams);
+                                    RelativeLayout.LayoutParams removeParams = (RelativeLayout.LayoutParams) removeImg.getLayoutParams();
+                                    removeParams.width = removeView_w;
+                                    removeParams.height = removeView_h;
+                                    removeImg.setLayoutParams(removeParams);
+                                }
                             }
                         }
                         windowManager.updateViewLayout(btnView, params);
