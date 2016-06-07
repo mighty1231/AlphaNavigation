@@ -195,7 +195,6 @@ public class FloatingService extends Service{
 
     // click callback
     // longclick call back could be called by above runnable object.
-    static int tt = 0;
     public void onClick() {
         // startActivity()
     }
@@ -213,7 +212,18 @@ public class FloatingService extends Service{
 
         windowManager.getDefaultDisplay().getSize(szWindow);
         removeView_cx = szWindow.x/2;
-        removeView_cy = (int) (szWindow.y - (25 * getApplicationContext().getResources().getDisplayMetrics().density));
+        removeView_cy = (int) (szWindow.y - 25*density - removeView_h/2);
+
+        // @TODO touch listener should do something...
+        RelativeLayout.LayoutParams removeParams = (RelativeLayout.LayoutParams) removeImg.getLayoutParams();
+        removeParams.width = removeView_w;
+        removeParams.height = removeView_h;
+        removeImg.setLayoutParams(removeParams);
+
+        WindowManager.LayoutParams btnParams = (WindowManager.LayoutParams) btnView.getLayoutParams();
+        btnParams.x = removeView_cx - btnView_w/2;
+        btnParams.y = removeView_cy - btnView_h/2;
+        windowManager.updateViewLayout(btnView, btnParams);
     }
 
     @Override
