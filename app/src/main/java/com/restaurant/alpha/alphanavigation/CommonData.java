@@ -98,7 +98,9 @@ public class CommonData {
     }
 
     public TMapPoint getNextPoint() {
-        return simplePathPoint.get(nextPoint);
+        if (simplePathPoint == null) {
+            return null;
+        } else return simplePathPoint.get(nextPoint);
     }
 
     public int getRemainDistancePoint() {

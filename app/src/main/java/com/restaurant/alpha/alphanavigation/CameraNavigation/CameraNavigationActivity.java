@@ -57,6 +57,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         } else {
             Toast.makeText(this, "Camera is not available", Toast.LENGTH_LONG).show();
         }
+        SensorFusionListener.getInstance(null).activate();
 
         twoDMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +124,8 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
                 TMapPoint point = CommonData.getInstance().getNextPoint();
                 TMapPoint current = CommonData.getInstance().getCurrentLocation();
                 remainDistance.setText(String.format(Integer.toString(CommonData.getInstance().getNextPointRaw()) + ", " + Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
-                arrowView.setDestination((float)(point.getLongitude() - current.getLongitude()), (float)(point.getLatitude() - current.getLatitude()));
+                if (point != null && current != null)
+                    arrowView.setDestination((float)(point.getLongitude() - current.getLongitude()), (float)(point.getLatitude() - current.getLatitude()));
             }
         });
     }

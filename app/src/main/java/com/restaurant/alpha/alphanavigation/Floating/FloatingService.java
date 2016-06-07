@@ -17,10 +17,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.restaurant.alpha.alphanavigation.CommonData;
 import com.restaurant.alpha.alphanavigation.R;
 import com.restaurant.alpha.alphanavigation.Util.ArrowView;
 import com.restaurant.alpha.alphanavigation.Util.RenderTestActivity;
 import com.restaurant.alpha.alphanavigation.Util.SensorFusionListener;
+import com.skp.Tmap.TMapPoint;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FloatingService extends Service{
     private WindowManager windowManager;
@@ -28,6 +33,7 @@ public class FloatingService extends Service{
     private ArrowView btnImg;
     private ImageView removeImg;
 
+    private Timer refreshTimer;
 
     private Point szWindow = new Point();
     private float density;
@@ -191,6 +197,17 @@ public class FloatingService extends Service{
                 return false;
             }
         });
+
+        refreshTimer = new Timer();
+        refreshTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run () {
+                TMapPoint point = CommonData.getInstance().getNextPoint();
+                TMapPoint current = CommonData.getInstance().getCurrentLocation();
+                if (point != null && current != null)
+                    btnImg.setDestination((float)(point.getLongitude() - current.getLongitude()), (float)(point.getLatitude() - current.getLatitude()));
+            }
+        }, 0, 50);
     }
 
     // click callback

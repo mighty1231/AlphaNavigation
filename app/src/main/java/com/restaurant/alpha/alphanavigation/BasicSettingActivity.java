@@ -50,8 +50,6 @@ public class BasicSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_setting);
 
-        startService(new Intent(getApplicationContext(), FloatingService.class));
-
         RecyclerView stopRecyclerView = (RecyclerView) findViewById(R.id.stop_recycler_view);
         RecyclerView historyRecyclerView = (RecyclerView)findViewById(R.id.history_recycler_view);
         ImageView addStops = (ImageView)findViewById(R.id.add_stop);

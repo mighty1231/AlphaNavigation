@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.restaurant.alpha.alphanavigation.AlphaNavigation;
 import com.restaurant.alpha.alphanavigation.CameraNavigation.CameraNavigationActivity;
 import com.restaurant.alpha.alphanavigation.CommonData;
+import com.restaurant.alpha.alphanavigation.Floating.FloatingService;
 import com.restaurant.alpha.alphanavigation.R;
 import com.skp.Tmap.TMapData.FindPathDataListenerCallback;
 import com.skp.Tmap.TMapData;
@@ -151,6 +152,8 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         return normalDistance > 0.0000001 ? abs(px * by - py * bx) / normalDistance : 0;
                     }
                 });
+
+        startService(new Intent(getApplicationContext(), FloatingService.class));
     }
 
     @Override

@@ -100,6 +100,8 @@ public class SensorFusionListener implements SensorEventListener {
     public void deactivate() {
         Log.d("SensorFusionListener", "deactivated, refcount = " + refcount);
         refcount -= 1;
+        if (refcount == -1)
+            refcount = 0;
         if (refcount == 0 && available) {
             sensorManager.unregisterListener(this);
             fuseTimer.cancel();
