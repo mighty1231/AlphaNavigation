@@ -38,7 +38,7 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         gps = new TMapGpsManager(this);
         gps.setMinTime(500);
         gps.setMinDistance(1);
-        gps.setProvider(TMapGpsManager.NETWORK_PROVIDER);
+        gps.setProvider(TMapGpsManager.GPS_PROVIDER);
         gps.OpenGps();
 
         /**
@@ -73,7 +73,13 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
             tMapPolyLine.addLinePoint(currPoint);
             tMapPolyLine.addLinePoint(CommonData.getInstance().getNextPoint());
             if (tMapPolyLine.getDistance() < 10) {
-                CommonData.getInstance().setNextPoint();
+                if (CommonData.getInstance().getRemainDistancePoint() < 1) {
+                    Toast.makeText(getApplicationContext(), "Ending Success", Toast.LENGTH_SHORT).show();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+                else {
+                    CommonData.getInstance().setNextPoint();
+                }
             }
 
             tMapPolyLine = new TMapPolyLine();
@@ -91,7 +97,7 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
             Double remainD = tMapPolyLine.getDistance();
             CommonData.getInstance().setRemainDistance(remainD);
 
-            Toast.makeText(getApplicationContext(), Integer.toString(CommonData.getInstance().getNextPointRaw()) + "," + Double.toString(straightD) + "," + Double.toString(remainD), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), Integer.toString(CommonData.getInstance().getNextPointRaw()) + "," + Double.toString(straightD) + "," + Double.toString(remainD), Toast.LENGTH_SHORT).show();
         }
 
         if ( callback1 != null ) {

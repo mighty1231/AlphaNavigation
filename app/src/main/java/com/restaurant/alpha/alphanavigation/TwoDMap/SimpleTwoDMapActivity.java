@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.restaurant.alpha.alphanavigation.CommonData;
 import com.restaurant.alpha.alphanavigation.R;
+import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapView;
 
 public class SimpleTwoDMapActivity extends AppCompatActivity {
@@ -26,6 +27,10 @@ public class SimpleTwoDMapActivity extends AppCompatActivity {
         tMapView.setCenterPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
         tMapView.setCompassMode(true);
 
+        TMapMarkerItem currentPoint = new TMapMarkerItem();
+        currentPoint.setTMapPoint(CommonData.getInstance().getCurrentLocation());
+        currentPoint.setVisible(TMapMarkerItem.VISIBLE);
+        tMapView.addMarkerItem("currentLocation", currentPoint);
         tMapView.addTMapPath(CommonData.getInstance().getPathFound());
     }
 }

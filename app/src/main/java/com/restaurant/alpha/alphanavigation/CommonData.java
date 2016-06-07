@@ -100,4 +100,8 @@ public class CommonData {
     public TMapPoint getNextPoint() {
         return simplePathPoint.get(nextPoint);
     }
+
+    public int getRemainDistancePoint() {
+        return simplePathPoint.size() - nextPoint;
+    }
 }

@@ -93,12 +93,8 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                remainDistance.setText(String.format(Double.toString(Math.round(Math.round(CommonData.getInstance().getRemainDistance() / 10) * 10)) + "m"));
+                remainDistance.setText(String.format(Integer.toString(CommonData.getInstance().getNextPointRaw()) + ", " + Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
             }
         });
-
-        Toast.makeText(getApplicationContext(),
-                "Updating" + CommonData.getInstance().getRemainDistance(),
-                Toast.LENGTH_SHORT).show();
     }
 }

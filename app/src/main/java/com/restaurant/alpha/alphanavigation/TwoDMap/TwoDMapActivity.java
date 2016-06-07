@@ -99,7 +99,7 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         int size = points.size();
 
                         simpledPathData.addLinePoint(points.get(0));
-                        separateLineRec(points, simpledPathData, 0, size - 1, 40);
+                        separateLineRec(points, simpledPathData, 0, size - 1, 30);
                         simpledPathData.addLinePoint(points.get(size - 1));
 
                         Log.d("Path find", simpledPathData.getLinePoint().size() + "");
@@ -162,9 +162,6 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
     @Override
     public void onLocationChange(Location location) {
         tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
-        Toast.makeText(getApplicationContext(),
-                "Updating",
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
