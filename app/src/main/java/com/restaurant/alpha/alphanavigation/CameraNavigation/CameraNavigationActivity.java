@@ -17,12 +17,16 @@ import com.restaurant.alpha.alphanavigation.AlphaNavigation;
 import com.restaurant.alpha.alphanavigation.CommonData;
 import com.restaurant.alpha.alphanavigation.R;
 import com.restaurant.alpha.alphanavigation.TwoDMap.SimpleTwoDMapActivity;
+import com.restaurant.alpha.alphanavigation.Util.ArrowView;
+import com.restaurant.alpha.alphanavigation.Util.SensorFusionListener;
 import com.skp.Tmap.TMapGpsManager;
+import com.skp.Tmap.TMapPoint;
 
 public class CameraNavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback {
     private Camera mCamera;
     private CameraPreview mPreview;
     private FrameLayout mCameraNavigationLayout;
+    private ArrowView arrowView;
     private TextView remainDistance;
 
     @Override
@@ -37,10 +41,11 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
 
         remainDistance = (TextView)findViewById(R.id.remain_distance);
         remainDistance.setText(String.format(Double.toString(Math.round(Math.round(CommonData.getInstance().getRemainDistance() / 10) * 10)) + "m"));
-        int viewCount = mCameraNavigationLayout.getChildCount();
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
+
+        arrowView = (ArrowView) findViewById(R.id.arrow_view_in_camnavi);
 
         assert(mCameraNavigationLayout != null);
         assert(remainDistance != null);
@@ -61,12 +66,34 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
                 startActivity(intent);
             }
         });
-//        // Make all other views being front of the camera view.
-//        Log.d("CameraNavigation", "viewcound = " + viewCount);
-//        for (int i = 0; i < viewCount; i++) {
-//            mCameraNavigationLayout.getChildAt(i).bringToFront();
-//            mCameraNavigationLayout.getChildAt(i).invalidate();
-//        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SensorFusionListener.getInstance(null).deactivate();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // The following call pauses the rendering thread.
+        // If your OpenGL application is memory intensive,
+        // you should consider de-allocating objects that
+        // consume significant memory here.
+        arrowView.onPause();
+        SensorFusionListener.getInstance(null).deactivate();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // The following call resumes a paused rendering thread.
+        // If you de-allocated graphic objects for onPause()
+        // this is a good place to re-allocate them.
+        arrowView.onResume();
+        SensorFusionListener.getInstance(null).activate();
     }
 
     @Override
@@ -93,7 +120,10 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                TMapPoint point = CommonData.getInstance().getNextPoint();
+                TMapPoint current = CommonData.getInstance().getCurrentLocation();
                 remainDistance.setText(String.format(Integer.toString(CommonData.getInstance().getNextPointRaw()) + ", " + Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
+                arrowView.setDestination((float)(point.getLongitude() - current.getLongitude()), (float)(point.getLatitude() - current.getLatitude()));
             }
         });
     }
