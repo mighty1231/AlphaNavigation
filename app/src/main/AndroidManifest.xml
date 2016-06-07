@@ -31,11 +31,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".BasicSettingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SelectLocationByNameActivity"
@@ -58,10 +53,18 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity android:name=".Util.FusionTestActivity" />
-
         <activity
             android:name=".TwoDMap.SimpleTwoDMapActivity"
-            android:label="@string/title_activity_2d_map"/>
+            android:label="@string/title_activity_2d_map" />
+        <activity android:name=".LoadingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

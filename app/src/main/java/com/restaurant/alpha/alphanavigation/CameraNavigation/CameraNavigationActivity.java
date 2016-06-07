@@ -35,13 +35,13 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_navigation);
 
-        ((AlphaNavigation) getApplication()).setLocationChangeCallBackCamera(this);
+
 
         mCameraNavigationLayout = (FrameLayout) findViewById(R.id.camera_preview);
         Button twoDMapButton = (Button)findViewById(R.id.button_2d);
 
         remainDistance = (TextView)findViewById(R.id.remain_distance);
-        remainDistance.setText(String.format(Double.toString(Math.round(Math.round(CommonData.getInstance().getRemainDistance() / 10) * 10)) + "m"));
+        remainDistance.setText(String.format(Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -78,6 +78,8 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
                 startActivity(intent);
             }
         });
+
+        ((AlphaNavigation) getApplication()).setLocationChangeCallBackCamera(this);
 
     }
 
@@ -135,7 +137,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
             public void run() {
                 TMapPoint point = CommonData.getInstance().getNextPoint();
                 TMapPoint current = CommonData.getInstance().getCurrentLocation();
-                remainDistance.setText(String.format(Integer.toString(CommonData.getInstance().getNextPointRaw()) + ", " + Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
+                remainDistance.setText(String.format(Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
                 if (point != null && current != null)
                     arrowView.setDestination((float)(point.getLongitude() - current.getLongitude()), (float)(point.getLatitude() - current.getLatitude()));
             }

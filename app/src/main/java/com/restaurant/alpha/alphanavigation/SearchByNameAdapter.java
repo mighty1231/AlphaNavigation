@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.skp.Tmap.TMapPOIItem;
 
@@ -50,7 +49,10 @@ public class SearchByNameAdapter extends RecyclerView.Adapter<SearchByNameAdapte
         // - get element from your data at this position
         // - replace the contents of the view with that element
         holder.myTextView.setText(myData.get(position).getPOIName());
-        holder.myTextView.setOnClickListener(new View.OnClickListener() {
+        String address = myData.get(position).getPOIAddress();
+        int index = address.lastIndexOf(" ");
+        holder.detailTextView.setText(myData.get(position).getPOIAddress().substring(0, index));
+        holder.detailTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
@@ -66,7 +68,39 @@ public class SearchByNameAdapter extends RecyclerView.Adapter<SearchByNameAdapte
                                 pos[1] =  myData.get(position).getPOIPoint().getLongitude();
                                 String name = myData.get(position).getPOIName();
 
-                                Toast.makeText(context, Double.toString(pos[0]) + "," +Double.toString(pos[1]) + "," + name, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent();
+                                intent.putExtra("pos", pos);
+                                intent.putExtra("name", name);
+                                ((Activity)context).setResult(BasicSettingActivity.RESULT_OK, intent);
+                                ((Activity)context).finish();
+                            }
+                        });
+                alertBuilder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            }
+        });
+        holder.myTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
+                alertBuilder.setTitle("Do you want to Select?");
+                alertBuilder.setMessage("Adding Location");
+
+                alertBuilder.setPositiveButton("Add",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                double[] pos = new double[2];
+                                pos[0] = myData.get(position).getPOIPoint().getLatitude();
+                                pos[1] =  myData.get(position).getPOIPoint().getLongitude();
+                                String name = myData.get(position).getPOIName();
 
                                 Intent intent = new Intent();
                                 intent.putExtra("pos", pos);
@@ -94,9 +128,11 @@ public class SearchByNameAdapter extends RecyclerView.Adapter<SearchByNameAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView myTextView;
+        public TextView detailTextView;
         public ViewHolder(View view) {
             super(view);
             myTextView = (TextView)view.findViewById(R.id.name_title);
+            detailTextView = (TextView)view.findViewById(R.id.name_detail);
         }
     }
 

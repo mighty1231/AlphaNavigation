@@ -108,7 +108,6 @@ public class BasicSettingActivity extends AppCompatActivity {
                 final CharSequence[] items = {"Select Location By Name", "Select Location By Map"};
                 alertBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                         Intent intent = null;
                         if (which == 0) {
                             intent = new Intent(getApplicationContext(), SelectLocationByNameActivity.class);
@@ -143,7 +142,6 @@ public class BasicSettingActivity extends AppCompatActivity {
                     final CharSequence[] items = {"Select Location By Name", "Select Location By Map"};
                     alertBuilder.setItems(items, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                             Intent intent = null;
                             if (which == 0) {
                                 intent = new Intent(getApplicationContext(), SelectLocationByNameActivity.class);

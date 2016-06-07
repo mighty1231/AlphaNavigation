@@ -1,10 +1,14 @@
 package com.restaurant.alpha.alphanavigation;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
     private boolean startNavigation = false;
     public static TMapGpsManager gps = null;
 
+    public TMapGpsManager.onLocationChangedCallback callback0 = null;
     public TMapGpsManager.onLocationChangedCallback callback1 = null;
     public TMapGpsManager.onLocationChangedCallback callback2 = null;
 
@@ -38,7 +43,7 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         gps = new TMapGpsManager(this);
         gps.setMinTime(500);
         gps.setMinDistance(1);
-        gps.setProvider(TMapGpsManager.GPS_PROVIDER);
+        gps.setProvider(TMapGpsManager.NETWORK_PROVIDER);
         gps.OpenGps();
 
         /**
@@ -74,8 +79,31 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
             tMapPolyLine.addLinePoint(CommonData.getInstance().getNextPoint());
             if (tMapPolyLine.getDistance() < 10) {
                 if (CommonData.getInstance().getRemainDistancePoint() < 1) {
-                    Toast.makeText(getApplicationContext(), "Ending Success", Toast.LENGTH_SHORT).show();
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    if (tMapPolyLine.getDistance() < 5) {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+                        alertBuilder.setTitle("This is the Destination");
+                        alertBuilder.setMessage("Do you want to End Navigation?");
+
+                        alertBuilder.setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(getApplicationContext(), "Ending Success", Toast.LENGTH_SHORT).show();
+                                        //stopService();
+                                        android.os.Process.killProcess(android.os.Process.myPid());
+                                    }
+                                });
+                        alertBuilder.setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+
+                    }
                 }
                 else {
                     CommonData.getInstance().setNextPoint();
@@ -100,12 +128,18 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
             //Toast.makeText(getApplicationContext(), Integer.toString(CommonData.getInstance().getNextPointRaw()) + "," + Double.toString(straightD) + "," + Double.toString(remainD), Toast.LENGTH_SHORT).show();
         }
 
+        if (callback0 != null) {
+            callback0.onLocationChange(location);
+        }
         if ( callback1 != null ) {
             callback1.onLocationChange(location);
         }
         if (callback2 != null) {
             callback2.onLocationChange(location);
         }
+    }
+    public void setLocationChangeCallback0(TMapGpsManager.onLocationChangedCallback ca) {
+        callback0 = ca;
     }
 
     public void setLocationChangeCallback(TMapGpsManager.onLocationChangedCallback ca) {
@@ -115,6 +149,10 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
 
     public void setLocationChangeCallBackCamera (TMapGpsManager.onLocationChangedCallback ca) {
         callback2 = ca;
+    }
+
+    public void deleteLocationChangeCallback0() {
+        callback0 = null;
     }
 
     public void deleteLocationChangeCallback() {
