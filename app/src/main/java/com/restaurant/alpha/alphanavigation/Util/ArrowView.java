@@ -26,6 +26,9 @@ import com.restaurant.alpha.alphanavigation.Util.ArrowRenderer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
@@ -33,37 +36,64 @@ import java.util.TimerTask;
  */
 public class ArrowView extends GLSurfaceView {
 
-    private final ArrowRenderer mRenderer;
+    private final GLSurfaceView.Renderer mRenderer;
     private Timer refreshTimer = new Timer();
 
     public ArrowView(Context context) {
         super(context);
 
-        // Create an OpenGL ES 2.0 context.
-        setEGLContextClientVersion(2);
+        if (SensorFusionListener.getInstance(null).isAvailable()) {
+            // Create an OpenGL ES 2.0 context.
+            setEGLContextClientVersion(2);
 
-        // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new ArrowRenderer();
-        setRenderer(mRenderer);
+            // Set the Renderer for drawing on the GLSurfaceView
+            mRenderer = new ArrowRenderer();
+            setRenderer(mRenderer);
 
-        // Render the view only when there is a change in the drawing data
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            // Render the view only when there is a change in the drawing data
+            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
-        refreshTimer.scheduleAtFixedRate(new refreshTask(), 0, 30);
+            refreshTimer.scheduleAtFixedRate(new refreshTask(), 0, 30);
+        } else {
+            mRenderer = new EmptyRenderer();
+            setRenderer(mRenderer);
+            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        }
     }
 
     /* dEW = E (+) W (-)
      * dNS = N (+) S (-) */
     public void setDestination(float dEW, float dNS) {
-        mRenderer.setDestination(dEW, dNS);
+        if (mRenderer.getClass() == ArrowRenderer.class) {
+            ((ArrowRenderer) mRenderer).setDestination(dEW, dNS);
+        }
         requestRender();
     }
     class refreshTask extends TimerTask {
         public void run() {
-            float[] fusedOrientation = SensorFusionListener.getInstance(null).getFusedOrientation();
-            mRenderer.setFusedOrientation(fusedOrientation[0], fusedOrientation[1], fusedOrientation[2]);
-            requestRender();
+            if (mRenderer.getClass() == ArrowRenderer.class) {
+                float[] fusedOrientation = SensorFusionListener.getInstance(null).getFusedOrientation();
+                ((ArrowRenderer) mRenderer).setFusedOrientation(fusedOrientation[0], fusedOrientation[1], fusedOrientation[2]);
+                requestRender();
+            }
+        }
+    }
+
+    class EmptyRenderer implements GLSurfaceView.Renderer {
+        @Override
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
+        }
+
+        @Override
+        public void onSurfaceChanged(GL10 gl, int width, int height) {
+
+        }
+
+        @Override
+        public void onDrawFrame(GL10 gl) {
+
         }
     }
 }

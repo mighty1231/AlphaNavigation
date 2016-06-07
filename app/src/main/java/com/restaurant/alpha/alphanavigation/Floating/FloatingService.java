@@ -52,6 +52,7 @@ public class FloatingService extends Service{
         SensorFusionListener.getInstance(null).activate();
         removeView_cx = szWindow.x/2;
         removeView_cy = (int) (szWindow.y - (25 * getApplicationContext().getResources().getDisplayMetrics().density));
+        Log.d("FloatingService", String.format("x y cx cy %d %d %d %d", szWindow.x, szWindow.y, removeView_cx, removeView_cy));
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -72,6 +73,8 @@ public class FloatingService extends Service{
         btnView = (RelativeLayout)inflater.inflate(R.layout.floating_btn, null);
         btnImg = new ArrowView(this);
         btnView.addView(btnImg);
+        btnImg.getLayoutParams().width = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
+        btnImg.getLayoutParams().height = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
         WindowManager.LayoutParams btnParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -94,7 +97,6 @@ public class FloatingService extends Service{
                 @Override
                 public void run() {
                     Log.d("floatingService", "run!!");
-                    removeView.setVisibility(View.VISIBLE);
                     removeView_visible = true;
 
                     WindowManager.LayoutParams rmvParams = (WindowManager.LayoutParams) removeView.getLayoutParams();
@@ -103,6 +105,7 @@ public class FloatingService extends Service{
                     rmvParams.x = removeView_cx - removeView_w/2;
                     rmvParams.y = removeView_cy - removeView_h/2;
                     windowManager.updateViewLayout(removeView, rmvParams);
+                    removeView.setVisibility(View.VISIBLE);
                 }
             };
 
@@ -111,8 +114,6 @@ public class FloatingService extends Service{
                 if (removeView_w == 0) {
                     removeView_w = removeView.getWidth();
                     removeView_h = removeView.getHeight();
-                    btnImg.getLayoutParams().width = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
-                    btnImg.getLayoutParams().height = (int)(80 * getApplicationContext().getResources().getDisplayMetrics().density);
                     btnView_w = btnView.getWidth();
                     btnView_h = btnView.getHeight();
                 }

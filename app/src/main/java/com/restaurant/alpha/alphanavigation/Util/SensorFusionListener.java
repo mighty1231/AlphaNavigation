@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,6 +14,10 @@ public class SensorFusionListener implements SensorEventListener {
     private static SensorFusionListener mInstance = null;
     private SensorManager sensorManager;
     private int refcount = 0;
+    private Sensor accSensor;
+    private Sensor gyroSensor;
+    private Sensor magSensor;
+    private boolean available;
 
     // angular speeds from gyro
     private float[] gyro = new float[3];
@@ -49,7 +54,14 @@ public class SensorFusionListener implements SensorEventListener {
 
     public SensorFusionListener(Context cont) {
         sensorManager = (SensorManager) cont.getSystemService(cont.SENSOR_SERVICE);
+        accSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        magSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        available = (accSensor != null) && (gyroSensor != null) && (magSensor != null);
     }
+
+    public boolean isAvailable() { return available; }
 
     public static SensorFusionListener getInstance(Context cont) {
         if (mInstance == null)
@@ -58,7 +70,8 @@ public class SensorFusionListener implements SensorEventListener {
     }
 
     public void activate() {
-        if (refcount == 0) {
+        Log.d("SensorFusionListener", "activated, refcount = " + refcount);
+        if (refcount == 0 && available) {
             gyroOrientation[0] = 0.0f;
             gyroOrientation[1] = 0.0f;
             gyroOrientation[2] = 0.0f;
@@ -73,17 +86,10 @@ public class SensorFusionListener implements SensorEventListener {
             gyroMatrix[6] = 0.0f;
             gyroMatrix[7] = 0.0f;
             gyroMatrix[8] = 1.0f;
-            sensorManager.registerListener(this,
-                    sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                    SensorManager.SENSOR_DELAY_FASTEST);
 
-            sensorManager.registerListener(this,
-                    sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
-                    SensorManager.SENSOR_DELAY_FASTEST);
-
-            sensorManager.registerListener(this,
-                    sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                    SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this, accSensor, SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this, gyroSensor, SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this, magSensor, SensorManager.SENSOR_DELAY_FASTEST);
 
             fuseTimer = new Timer();
             fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(),
@@ -92,8 +98,9 @@ public class SensorFusionListener implements SensorEventListener {
         refcount += 1;
     }
     public void deactivate() {
+        Log.d("SensorFusionListener", "deactivated, refcount = " + refcount);
         refcount -= 1;
-        if (refcount == 0) {
+        if (refcount == 0 && available) {
             sensorManager.unregisterListener(this);
             fuseTimer.cancel();
         }
@@ -318,6 +325,7 @@ public class SensorFusionListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+//        Log.d("SensorFusionListener", "onSensorChanged");
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 setAccel(event.values);
