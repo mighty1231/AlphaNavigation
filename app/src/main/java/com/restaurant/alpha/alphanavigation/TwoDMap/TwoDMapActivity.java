@@ -46,7 +46,7 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar_2D);
         assert toolbar != null;
-        toolbar.setTitle("Map");
+        //toolbar.setTitle("Map");
         setSupportActionBar(toolbar);
 
         tMapView = new TMapView(this);
@@ -82,7 +82,8 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         TMapPolyLine simpledPathData = separateLine(pathData.getLinePoint());
 //                        tMapView.addTMapPolyLine("SIMPLE", simpledPathData);
 
-                        CommonData.getInstance().setPathFound(pathData.getLinePoint());
+                        CommonData.getInstance().setPathFound(pathData);
+                        CommonData.getInstance().setSimplePathPoint(simpledPathData.getLinePoint());
 
                         int i = 0;
                         for (TMapPoint point : simpledPathData.getLinePoint()) {
@@ -98,7 +99,7 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         int size = points.size();
 
                         simpledPathData.addLinePoint(points.get(0));
-                        separateLineRec(points, simpledPathData, 0, size - 1, 40);
+                        separateLineRec(points, simpledPathData, 0, size - 1, 30);
                         simpledPathData.addLinePoint(points.get(size - 1));
 
                         Log.d("Path find", simpledPathData.getLinePoint().size() + "");
@@ -161,9 +162,6 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
     @Override
     public void onLocationChange(Location location) {
         tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
-        Toast.makeText(getApplicationContext(),
-                "Updating",
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -171,6 +169,9 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
         int id = item.getItemId();
         switch (id) {
             case R.id.action_back_to_3d:
+                Intent intent = new Intent(getApplicationContext(), CameraNavigationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.action_current:

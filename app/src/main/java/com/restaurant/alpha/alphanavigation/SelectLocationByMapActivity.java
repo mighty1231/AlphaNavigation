@@ -43,6 +43,11 @@ public class SelectLocationByMapActivity extends AppCompatActivity  {
         if(CommonData.getInstance().getCurrentLocation() != null) {
             tmapview.setCenterPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
             tmapview.setLocationPoint(CommonData.getInstance().getCurrentLocation().getLongitude(), CommonData.getInstance().getCurrentLocation().getLatitude());
+
+            TMapMarkerItem currentPoint = new TMapMarkerItem();
+            currentPoint.setTMapPoint(CommonData.getInstance().getCurrentLocation());
+            currentPoint.setVisible(TMapMarkerItem.VISIBLE);
+            tmapview.addMarkerItem("currentLocation", currentPoint);
         }
         locationByNameRelativeLayout.addView(tmapview);
 

@@ -11,17 +11,22 @@ import android.widget.Toast;
 import com.restaurant.alpha.alphanavigation.Util.SensorFusionListener;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapPoint;
+import com.skp.Tmap.TMapPolyLine;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class AlphaNavigation extends Application implements TMapGpsManager.onLocationChangedCallback {
 
+    private boolean firstLocation = false;
+    private boolean startNavigation = false;
     public static TMapGpsManager gps = null;
 
     public TMapGpsManager.onLocationChangedCallback callback1 = null;
+    public TMapGpsManager.onLocationChangedCallback callback2 = null;
 
-    @Override
     public void onCreate() {
         super.onCreate();
 
@@ -31,9 +36,9 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
 
 
         gps = new TMapGpsManager(this);
-        gps.setMinTime(1000);
-        gps.setMinDistance(5);
-        gps.setProvider(TMapGpsManager.NETWORK_PROVIDER);
+        gps.setMinTime(500);
+        gps.setMinDistance(1);
+        gps.setProvider(TMapGpsManager.GPS_PROVIDER);
         gps.OpenGps();
 
         /**
@@ -54,16 +59,70 @@ public class AlphaNavigation extends Application implements TMapGpsManager.onLoc
         double longitude = location.getLongitude();
         CommonData.getInstance().setCurrentLocation(new TMapPoint(latitude, longitude));
 
-        if ( callback1 != null )
+        if(!firstLocation) {
+            Toast.makeText(getApplicationContext(), "Get Location", Toast.LENGTH_SHORT).show();
+            firstLocation = true;
+        }
+
+        if (startNavigation) {
+            TMapPoint destPoint = CommonData.getInstance().getDestination();
+            TMapPoint currPoint = new TMapPoint(location.getLatitude(), location.getLongitude());
+
+            TMapPolyLine tMapPolyLine = new TMapPolyLine();
+
+            tMapPolyLine.addLinePoint(currPoint);
+            tMapPolyLine.addLinePoint(CommonData.getInstance().getNextPoint());
+            if (tMapPolyLine.getDistance() < 10) {
+                if (CommonData.getInstance().getRemainDistancePoint() < 1) {
+                    Toast.makeText(getApplicationContext(), "Ending Success", Toast.LENGTH_SHORT).show();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+                else {
+                    CommonData.getInstance().setNextPoint();
+                }
+            }
+
+            tMapPolyLine = new TMapPolyLine();
+            tMapPolyLine.addLinePoint(currPoint);
+            tMapPolyLine.addLinePoint(destPoint);
+            Double straightD = tMapPolyLine.getDistance();
+            CommonData.getInstance().setRemainStraightDistance(straightD);
+
+            tMapPolyLine = new TMapPolyLine();
+            ArrayList<TMapPoint> tMapPoints = CommonData.getInstance().getSimplePathPoint();
+            tMapPolyLine.addLinePoint(currPoint);
+            for (int i = CommonData.getInstance().getNextPointRaw(); i < tMapPoints.size(); i++) {
+                tMapPolyLine.addLinePoint(tMapPoints.get(i));
+            }
+            Double remainD = tMapPolyLine.getDistance();
+            CommonData.getInstance().setRemainDistance(remainD);
+
+            //Toast.makeText(getApplicationContext(), Integer.toString(CommonData.getInstance().getNextPointRaw()) + "," + Double.toString(straightD) + "," + Double.toString(remainD), Toast.LENGTH_SHORT).show();
+        }
+
+        if ( callback1 != null ) {
             callback1.onLocationChange(location);
+        }
+        if (callback2 != null) {
+            callback2.onLocationChange(location);
+        }
     }
 
     public void setLocationChangeCallback(TMapGpsManager.onLocationChangedCallback ca) {
+        startNavigation = true;
         callback1 = ca;
+    }
+
+    public void setLocationChangeCallBackCamera (TMapGpsManager.onLocationChangedCallback ca) {
+        callback2 = ca;
     }
 
     public void deleteLocationChangeCallback() {
         callback1 = null;
+    }
+
+    public void deleteLocationChangeCallBackCamera() {
+        callback2 = null;
     }
 
     @Override

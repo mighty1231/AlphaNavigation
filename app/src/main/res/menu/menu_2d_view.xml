@@ -8,6 +8,6 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_back_to_3d"
-        android:title="@string/menu_back"
+        android:title="@string/menu_camera_view"
         app:showAsAction="ifRoom" />
 </menu>

@@ -1,6 +1,7 @@
 package com.restaurant.alpha.alphanavigation;
 
 import com.skp.Tmap.TMapPoint;
+import com.skp.Tmap.TMapPolyLine;
 
 import java.util.ArrayList;
 
@@ -14,8 +15,12 @@ public class CommonData {
     private TMapPoint destination = null;
     private ArrayList<TMapPoint> stops = null;
     private TMapPoint currentLocation = null;
+    private double remainStraightDistance;
+    private double remainDistance;
+    private int nextPoint = 1;
 
-    private ArrayList<TMapPoint> pathFound = null;
+    private TMapPolyLine pathFound = null;
+    private ArrayList<TMapPoint> simplePathPoint = null;
 
     public static CommonData getInstance() {
         /* DO NOT modify this */
@@ -40,8 +45,24 @@ public class CommonData {
         currentLocation = item;
     }
 
-    public void setPathFound(ArrayList<TMapPoint> items) {
-        pathFound = items;
+    public void setPathFound(TMapPolyLine item) {
+        pathFound = item;
+    }
+
+    public void setSimplePathPoint(ArrayList<TMapPoint> items) {
+        simplePathPoint = items;
+    }
+
+    public void setRemainStraightDistance(Double distance) {
+        remainStraightDistance = distance;
+    }
+
+    public void setRemainDistance (Double distance) {
+        remainDistance = distance;
+    }
+
+    public void setNextPoint () {
+        nextPoint++;
     }
 
     public TMapPoint getDestination() {
@@ -56,7 +77,31 @@ public class CommonData {
         return currentLocation;
     }
 
-    public ArrayList<TMapPoint> getPathFound() {
+    public TMapPolyLine getPathFound() {
         return pathFound;
+    }
+
+    public ArrayList<TMapPoint> getSimplePathPoint() {
+        return simplePathPoint;
+    }
+
+    public double getRemainStraightDistance() {
+        return remainStraightDistance;
+    }
+
+    public double getRemainDistance() {
+        return remainDistance;
+    }
+
+    public int getNextPointRaw() {
+        return nextPoint;
+    }
+
+    public TMapPoint getNextPoint() {
+        return simplePathPoint.get(nextPoint);
+    }
+
+    public int getRemainDistancePoint() {
+        return simplePathPoint.size() - nextPoint;
     }
 }

@@ -6,9 +6,11 @@
     <string name="title_stop_content">Stops</string>
     <string name="title_destination_content">Destination</string>
     <string name="title_history_content">History</string>
-    <string name="title_activity_select_location_by_name">SelectLocationByName</string>
-    <string name="title_activity_select_location_by_map">SelectLocationByMap</string>
+    <string name="title_activity_select_location_by_name">Select Location By Name</string>
+    <string name="title_activity_select_location_by_map">Select Location By Map</string>
+    <string name="title_activity_2d_map">2D Navigation</string>
     <string name="menu_name">Send</string>
     <string name="menu_back">Back</string>
+    <string name="menu_camera_view">3D Camera</string>
     <string name="GoToCurrentPosition">Current</string>
 </resources>
