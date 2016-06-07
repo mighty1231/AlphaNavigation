@@ -22,13 +22,13 @@ public class RenderTestActivity extends AppCompatActivity {
         // NNE direction
         arrowView.setDestination(1.0f, 2.0f);
         setContentView(arrowView);
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("RenderTestActivity");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("RenderTestActivity");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RenderTestActivity extends AppCompatActivity {
         // you should consider de-allocating objects that
         // consume significant memory here.
         arrowView.onPause();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("RenderTestActivity");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RenderTestActivity extends AppCompatActivity {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         arrowView.onResume();
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("RenderTestActivity");
     }
 
 }

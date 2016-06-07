@@ -7,17 +7,19 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SensorFusionListener implements SensorEventListener {
     private static SensorFusionListener mInstance = null;
     private SensorManager sensorManager;
-    private int refcount = 0;
     private Sensor accSensor;
     private Sensor gyroSensor;
     private Sensor magSensor;
     private boolean available;
+    ArrayList<String> owners = new ArrayList<String>();
 
     // angular speeds from gyro
     private float[] gyro = new float[3];
@@ -69,9 +71,8 @@ public class SensorFusionListener implements SensorEventListener {
         return mInstance;
     }
 
-    public void activate() {
-        Log.d("SensorFusionListener", "activated, refcount = " + refcount);
-        if (refcount == 0 && available) {
+    public void activate(String owner) {
+        if (owners.isEmpty() && available) {
             gyroOrientation[0] = 0.0f;
             gyroOrientation[1] = 0.0f;
             gyroOrientation[2] = 0.0f;
@@ -95,14 +96,15 @@ public class SensorFusionListener implements SensorEventListener {
             fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(),
                     1000, TIME_CONSTANT);
         }
-        refcount += 1;
+        if (!owners.contains(owner)) {
+            owners.add(owner);
+        }
     }
-    public void deactivate() {
-        Log.d("SensorFusionListener", "deactivated, refcount = " + refcount);
-        refcount -= 1;
-        if (refcount == -1)
-            refcount = 0;
-        if (refcount == 0 && available) {
+    public void deactivate(String owner) {
+        if (owners.contains(owner)) {
+            owners.remove(owner);
+        }
+        if (owners.isEmpty() && available) {
             sensorManager.unregisterListener(this);
             fuseTimer.cancel();
         }

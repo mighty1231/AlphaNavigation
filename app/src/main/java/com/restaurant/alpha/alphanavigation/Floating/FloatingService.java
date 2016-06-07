@@ -61,7 +61,7 @@ public class FloatingService extends Service{
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getSize(szWindow);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("FloatingService");
 
         // initialize views. 1. removeView. 2. btnView
         density = getApplicationContext().getResources().getDisplayMetrics().density;
@@ -221,7 +221,7 @@ public class FloatingService extends Service{
         super.onDestroy();
         if (btnView != null) windowManager.removeView(btnView);
         if (removeView != null) windowManager.removeView(removeView);
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("FloatingService");
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

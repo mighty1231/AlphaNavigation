@@ -22,7 +22,7 @@ public class FusionTestActivity extends AppCompatActivity {
 
         textView = (TextView)findViewById(R.id.renderTestTV);
 
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("FusionTestActivity");
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -41,19 +41,19 @@ public class FusionTestActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("FusionTestActivity");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("FusionTestActivity");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("FusionTestActivity");
     }
 
 }

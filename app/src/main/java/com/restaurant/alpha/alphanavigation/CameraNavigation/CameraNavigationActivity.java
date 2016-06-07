@@ -57,7 +57,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         } else {
             Toast.makeText(this, "Camera is not available", Toast.LENGTH_LONG).show();
         }
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("CameraNavigationActivity");
 
         twoDMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
     @Override
     public void onStop() {
         super.onStop();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("CameraNavigationActivity");
     }
 
     @Override
@@ -84,7 +84,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         // you should consider de-allocating objects that
         // consume significant memory here.
         arrowView.onPause();
-        SensorFusionListener.getInstance(null).deactivate();
+        SensorFusionListener.getInstance(null).deactivate("CameraNavigationActivity");
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         arrowView.onResume();
-        SensorFusionListener.getInstance(null).activate();
+        SensorFusionListener.getInstance(null).activate("CameraNavigationActivity");
     }
 
     @Override
