@@ -28,6 +28,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class FloatingService extends Service{
+    public static final String ACTION_NAME = "com.restaurant.alpha.alphanavigation.Floating.FloatingService";
     private WindowManager windowManager;
     private RelativeLayout btnView, removeView;
     private ArrowView btnImg;

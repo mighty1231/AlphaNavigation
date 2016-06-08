@@ -48,11 +48,14 @@ public class ArrowView extends GLSurfaceView {
 
             // Set the Renderer for drawing on the GLSurfaceView
             mRenderer = new ArrowRenderer();
-            setRenderer(mRenderer);
 
             // Render the view only when there is a change in the drawing data
-            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            setZOrderMediaOverlay(true);
+            setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+//            getHolder().setFormat(PixelFormat.TRANSLUCENT);
             getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            setRenderer(mRenderer);
+            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
             refreshTimer.scheduleAtFixedRate(new refreshTask(), 0, 30);
         } else {

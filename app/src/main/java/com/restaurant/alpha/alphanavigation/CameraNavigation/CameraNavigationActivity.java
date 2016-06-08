@@ -67,9 +67,6 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
             Toast.makeText(this, "Camera is not available", Toast.LENGTH_LONG).show();
         }
 
-        // two surface views
-        arrowView.setZOrderMediaOverlay(true);
-
         twoDMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -110,7 +110,7 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
     /** This is a handle to our per-vertex cube shading program. */
     private int mPerVertexProgramHandle;
 
-    final float cubeColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    final float cubeColor[] = {0.26953125f, 0.57421875f, 0.57421875f, 1.0f};
 
     /**
      * Initialize the model data.
@@ -301,6 +301,8 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
                         + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));  \n"
                         // Multiply the color by the illumination level. It will be interpolated across the triangle.
                         + "   v_Color = a_Color * diffuse;                                       \n"
+                        // Forth element (A of RGBA) of the color should be 1.0 to make the color non-transparent
+                        + "   v_Color[3] = 1.0;                                                  \n"
                         // gl_Position is a special variable used to store the final position.
                         // Multiply the vertex by the matrix to get the final point in normalized screen coordinates.
                         + "   gl_Position = u_MVPMatrix * a_Position;                            \n"
@@ -328,7 +330,7 @@ public class ArrowRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 glUnused, EGLConfig config)
     {
         // Set the background clear color to black.
-        GLES20.glClearColor(0.0f, 0.0f, 0.5f, 0.5f);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         // Use culling to remove back faces.
         GLES20.glEnable(GLES20.GL_CULL_FACE);
