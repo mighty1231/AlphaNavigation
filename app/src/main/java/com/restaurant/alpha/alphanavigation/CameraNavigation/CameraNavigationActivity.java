@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.restaurant.alpha.alphanavigation.AlphaNavigation;
 import com.restaurant.alpha.alphanavigation.CommonData;
+import com.restaurant.alpha.alphanavigation.Floating.FloatingService;
 import com.restaurant.alpha.alphanavigation.R;
 import com.restaurant.alpha.alphanavigation.TwoDMap.SimpleTwoDMapActivity;
 import com.restaurant.alpha.alphanavigation.Util.ArrowView;
@@ -30,6 +31,8 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
     private ArrowView arrowView;
     private TextView remainDistance;
 
+    Button twoDMapButton, floatingViewButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +41,8 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
 
 
         mCameraNavigationLayout = (FrameLayout) findViewById(R.id.camera_preview);
-        Button twoDMapButton = (Button)findViewById(R.id.button_2d);
+        twoDMapButton = (Button)findViewById(R.id.button_2d);
+        floatingViewButton = (Button)findViewById(R.id.button_floating);
 
         remainDistance = (TextView)findViewById(R.id.remain_distance);
         remainDistance.setText(String.format(Double.toString(Math.round(CommonData.getInstance().getRemainDistance())) + "m"));
@@ -72,10 +76,18 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SimpleTwoDMapActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
 
+        floatingViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(CameraNavigationActivity.this, FloatingService.class));
+                moveTaskToBack(true);
+            }
+        });
         ((AlphaNavigation) getApplication()).setLocationChangeCallBackCamera(this);
 
     }
@@ -83,9 +95,20 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
     @Override
     public void onStop() {
         super.onStop();
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
         SensorFusionListener.getInstance(null).deactivate("CameraNavigationActivity");
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mCamera == null) {
+            mCamera = Camera.open();
+        }
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -94,6 +117,10 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         // you should consider de-allocating objects that
         // consume significant memory here.
         arrowView.onPause();
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
         SensorFusionListener.getInstance(null).deactivate("CameraNavigationActivity");
     }
 
@@ -103,6 +130,14 @@ public class CameraNavigationActivity extends Activity implements TMapGpsManager
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
+        if (mCamera == null) {
+            mCamera = Camera.open();
+            mCamera.setDisplayOrientation(90);
+        }
+        if (mPreview != null) {
+            mPreview.setCamera(mCamera);
+        }
+        stopService(new Intent(this, FloatingService.class));
         arrowView.onResume();
         SensorFusionListener.getInstance(null).activate("CameraNavigationActivity");
     }

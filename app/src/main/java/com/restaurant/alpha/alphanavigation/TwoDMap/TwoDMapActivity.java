@@ -48,7 +48,13 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
         toolbar = (Toolbar) findViewById(R.id.toolbar_2D);
         assert toolbar != null;
         //toolbar.setTitle("Map");
+        Log.d("TwoDMapActivity", "Toolbar bef");
         setSupportActionBar(toolbar);
+        if (toolbar != null) {
+            Log.d("TwoDMapActivity", String.valueOf(toolbar));
+            Log.d("TwoDMapActivity", "w "+toolbar.getLayoutParams().width + ", h "+toolbar.getLayoutParams().height);
+        }
+        Log.d("TwoDMapActivity", "Toolbar af");
 
         tMapView = new TMapView(this);
 
@@ -152,8 +158,6 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
                         return normalDistance > 0.0000001 ? abs(px * by - py * bx) / normalDistance : 0;
                     }
                 });
-
-        startService(new Intent(getApplicationContext(), FloatingService.class));
     }
 
     @Override
@@ -174,6 +178,7 @@ public class TwoDMapActivity extends AppCompatActivity implements TMapGpsManager
             case R.id.action_back_to_3d:
                 Intent intent = new Intent(getApplicationContext(), CameraNavigationActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();
                 break;

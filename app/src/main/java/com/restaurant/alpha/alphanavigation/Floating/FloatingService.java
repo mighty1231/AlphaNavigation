@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.restaurant.alpha.alphanavigation.CameraNavigation.CameraNavigationActivity;
 import com.restaurant.alpha.alphanavigation.CommonData;
 import com.restaurant.alpha.alphanavigation.R;
 import com.restaurant.alpha.alphanavigation.Util.ArrowView;
@@ -215,6 +216,11 @@ public class FloatingService extends Service{
     // longclick call back could be called by above runnable object.
     public void onClick() {
         // startActivity()
+        Intent intent = new Intent(this, CameraNavigationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+//        stopSelf();
     }
 
     @Override
